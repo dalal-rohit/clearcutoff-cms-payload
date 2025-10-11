@@ -1,3 +1,5 @@
+import { heroSection } from '@/blocks/HeroSection'
+import { pricingSection } from '@/blocks/PricingSection'
 import { CollectionConfig } from 'payload'
 
 const Courses: CollectionConfig = {
@@ -13,6 +15,14 @@ const Courses: CollectionConfig = {
       fields: [
         { name: 'text', type: 'text', localized: true },
         { name: 'icon', type: 'text' },
+      ],
+    },
+    {
+      name: 'sections',
+      type: 'blocks',
+      blocks: [
+        heroSection,
+        pricingSection,
       ],
     },
   ],

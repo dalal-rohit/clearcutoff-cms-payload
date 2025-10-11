@@ -10,6 +10,9 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import Courses from './collections/Courses'
+import { Pages } from './collections/Pages'
+import { GlobalSections } from './globals/GlobalSections'
+import endpoints from './endpoints';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,7 +33,11 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses],
+  collections: [Users, Media, Courses, Pages],
+  endpoints,
+  globals: [
+    GlobalSections, // Register the global here
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     courses: Course;
+    pages: Page;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     courses: CoursesSelect<false> | CoursesSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -86,8 +88,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'global-sections': GlobalSection;
+  };
+  globalsSelect: {
+    'global-sections': GlobalSectionsSelect<false> | GlobalSectionsSelect<true>;
+  };
   locale: 'en' | 'hi';
   user: User & {
     collection: 'users';
@@ -189,6 +195,113 @@ export interface Course {
         id?: string | null;
       }[]
     | null;
+  sections?:
+    | (
+        | {
+            enabled?: boolean | null;
+            heading: string;
+            subheading?: string | null;
+            ctaText?: string | null;
+            ctaLink?: string | null;
+            backgroundImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'heroSection';
+          }
+        | {
+            enabled?: boolean | null;
+            title?: string | null;
+            showCoursePrice?: boolean | null;
+            cards?:
+              | {
+                  planName?: string | null;
+                  price?: number | null;
+                  features?:
+                    | {
+                        feature?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pricingSection';
+          }
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug: string;
+  /**
+   * Select which global sections to include on this page. Their content comes from Global Sections settings.
+   */
+  globalSections?: ('hero' | 'logoCarousel' | 'reviews' | 'footer')[] | null;
+  hero?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  logoCarousel?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  reviews?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  footer?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  localSections?:
+    | (
+        | {
+            enabled?: boolean | null;
+            heading: string;
+            subheading?: string | null;
+            ctaText?: string | null;
+            ctaLink?: string | null;
+            backgroundImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'heroSection';
+          }
+        | {
+            enabled?: boolean | null;
+            title?: string | null;
+            showCoursePrice?: boolean | null;
+            cards?:
+              | {
+                  planName?: string | null;
+                  price?: number | null;
+                  features?:
+                    | {
+                        feature?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pricingSection';
+          }
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -210,6 +323,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'courses';
         value: number | Course;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -309,6 +426,121 @@ export interface CoursesSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  sections?:
+    | T
+    | {
+        heroSection?:
+          | T
+          | {
+              enabled?: T;
+              heading?: T;
+              subheading?: T;
+              ctaText?: T;
+              ctaLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricingSection?:
+          | T
+          | {
+              enabled?: T;
+              title?: T;
+              showCoursePrice?: T;
+              cards?:
+                | T
+                | {
+                    planName?: T;
+                    price?: T;
+                    features?:
+                      | T
+                      | {
+                          feature?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  globalSections?: T;
+  hero?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  logoCarousel?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  reviews?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  footer?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  localSections?:
+    | T
+    | {
+        heroSection?:
+          | T
+          | {
+              enabled?: T;
+              heading?: T;
+              subheading?: T;
+              ctaText?: T;
+              ctaLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricingSection?:
+          | T
+          | {
+              enabled?: T;
+              title?: T;
+              showCoursePrice?: T;
+              cards?:
+                | T
+                | {
+                    planName?: T;
+                    price?: T;
+                    features?:
+                      | T
+                      | {
+                          feature?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -343,6 +575,114 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-sections".
+ */
+export interface GlobalSection {
+  id: number;
+  hero?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    subheading?: string | null;
+    ctaText?: string | null;
+    ctaLink?: string | null;
+    backgroundImage?: (number | null) | Media;
+  };
+  logoCarousel?: {
+    enabled?: boolean | null;
+    logos?:
+      | {
+          heading?: string | null;
+          subheading?: string | null;
+          logo?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  reviews?: {
+    enabled?: boolean | null;
+    reviews?:
+      | {
+          name?: string | null;
+          text?: string | null;
+          rating?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  footer?: {
+    enabled?: boolean | null;
+    copyright?: string | null;
+    links?:
+      | {
+          label?: string | null;
+          url?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-sections_select".
+ */
+export interface GlobalSectionsSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        subheading?: T;
+        ctaText?: T;
+        ctaLink?: T;
+        backgroundImage?: T;
+      };
+  logoCarousel?:
+    | T
+    | {
+        enabled?: T;
+        logos?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              logo?: T;
+              id?: T;
+            };
+      };
+  reviews?:
+    | T
+    | {
+        enabled?: T;
+        reviews?:
+          | T
+          | {
+              name?: T;
+              text?: T;
+              rating?: T;
+              id?: T;
+            };
+      };
+  footer?:
+    | T
+    | {
+        enabled?: T;
+        copyright?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
