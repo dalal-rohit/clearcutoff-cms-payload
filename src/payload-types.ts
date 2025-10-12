@@ -241,12 +241,49 @@ export interface Course {
 export interface Page {
   id: number;
   title: string;
-  slug: string;
-  /**
-   * Select which global sections to include on this page. Their content comes from Global Sections settings.
-   */
-  globalSections?: ('hero' | 'logoCarousel' | 'reviews' | 'footer')[] | null;
+  slug?: string | null;
+  sections?:
+    | (
+        | {
+            enabled?: boolean | null;
+            heading: string;
+            subheading?: string | null;
+            ctaText?: string | null;
+            ctaLink?: string | null;
+            backgroundImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'heroSection';
+          }
+        | {
+            enabled?: boolean | null;
+            title?: string | null;
+            showCoursePrice?: boolean | null;
+            cards?:
+              | {
+                  planName?: string | null;
+                  price?: number | null;
+                  features?:
+                    | {
+                        feature?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pricingSection';
+          }
+      )[]
+    | null;
   hero?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  course_hero?: {
     enabled?: boolean | null;
     heading?: string | null;
     color?: string | null;
@@ -256,12 +293,27 @@ export interface Page {
     heading?: string | null;
     color?: string | null;
   };
+  features?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  how_it_works?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
+  comparison_table?: {
+    enabled?: boolean | null;
+    heading?: string | null;
+    color?: string | null;
+  };
   reviews?: {
     enabled?: boolean | null;
     heading?: string | null;
     color?: string | null;
   };
-  footer?: {
+  faqs?: {
     enabled?: boolean | null;
     heading?: string | null;
     color?: string | null;
@@ -474,8 +526,52 @@ export interface CoursesSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  globalSections?: T;
+  sections?:
+    | T
+    | {
+        heroSection?:
+          | T
+          | {
+              enabled?: T;
+              heading?: T;
+              subheading?: T;
+              ctaText?: T;
+              ctaLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricingSection?:
+          | T
+          | {
+              enabled?: T;
+              title?: T;
+              showCoursePrice?: T;
+              cards?:
+                | T
+                | {
+                    planName?: T;
+                    price?: T;
+                    features?:
+                      | T
+                      | {
+                          feature?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
   hero?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  course_hero?:
     | T
     | {
         enabled?: T;
@@ -489,6 +585,27 @@ export interface PagesSelect<T extends boolean = true> {
         heading?: T;
         color?: T;
       };
+  features?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  how_it_works?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
+  comparison_table?:
+    | T
+    | {
+        enabled?: T;
+        heading?: T;
+        color?: T;
+      };
   reviews?:
     | T
     | {
@@ -496,7 +613,7 @@ export interface PagesSelect<T extends boolean = true> {
         heading?: T;
         color?: T;
       };
-  footer?:
+  faqs?:
     | T
     | {
         enabled?: T;
@@ -584,11 +701,19 @@ export interface GlobalSection {
   id: number;
   hero?: {
     enabled?: boolean | null;
+    eyebrow?: string | null;
     heading?: string | null;
     subheading?: string | null;
     ctaText?: string | null;
     ctaLink?: string | null;
     backgroundImage?: (number | null) | Media;
+  };
+  course_hero?: {
+    course_hero_eyebrow?: string | null;
+    course_hero_heading?: string | null;
+    course_hero_subheading?: string | null;
+    course_hero_ctaText?: string | null;
+    course_hero_ctaLink?: string | null;
   };
   logoCarousel?: {
     enabled?: boolean | null;
@@ -601,13 +726,123 @@ export interface GlobalSection {
         }[]
       | null;
   };
+  features?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
+    features?:
+      | {
+          heading?: string | null;
+          description?: string | null;
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  how_it_works?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
+    how_it_works?:
+      | {
+          heading?: string | null;
+          subheading?: string | null;
+          description?: string | null;
+          btn_text?: string | null;
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  comparison_table?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
+    comparison?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    coaching_center?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    clear_cutoff?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   reviews?: {
     enabled?: boolean | null;
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
     reviews?:
       | {
           name?: string | null;
-          text?: string | null;
+          profile?: (number | null) | Media;
+          gender?: ('male' | 'female') | null;
+          field?: string | null;
+          review?: string | null;
           rating?: number | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  faqs?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
+    categories?:
+      | {
+          category?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    faqs?:
+      | {
+          category?: string | null;
+          question?: string | null;
+          answer?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -635,11 +870,21 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
     | T
     | {
         enabled?: T;
+        eyebrow?: T;
         heading?: T;
         subheading?: T;
         ctaText?: T;
         ctaLink?: T;
         backgroundImage?: T;
+      };
+  course_hero?:
+    | T
+    | {
+        course_hero_eyebrow?: T;
+        course_hero_heading?: T;
+        course_hero_subheading?: T;
+        course_hero_ctaText?: T;
+        course_hero_ctaLink?: T;
       };
   logoCarousel?:
     | T
@@ -654,16 +899,134 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
               id?: T;
             };
       };
+  features?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
+        features?:
+          | T
+          | {
+              heading?: T;
+              description?: T;
+              image?: T;
+              id?: T;
+            };
+      };
+  how_it_works?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
+        how_it_works?:
+          | T
+          | {
+              heading?: T;
+              subheading?: T;
+              description?: T;
+              btn_text?: T;
+              image?: T;
+              id?: T;
+            };
+      };
+  comparison_table?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
+        comparison?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        coaching_center?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        clear_cutoff?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+      };
   reviews?:
     | T
     | {
         enabled?: T;
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
         reviews?:
           | T
           | {
               name?: T;
-              text?: T;
+              profile?: T;
+              gender?: T;
+              field?: T;
+              review?: T;
               rating?: T;
+              id?: T;
+            };
+      };
+  faqs?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
+        categories?:
+          | T
+          | {
+              category?: T;
+              id?: T;
+            };
+        faqs?:
+          | T
+          | {
+              category?: T;
+              question?: T;
+              answer?: T;
               id?: T;
             };
       };

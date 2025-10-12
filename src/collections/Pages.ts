@@ -5,35 +5,52 @@ import { pricingSection } from '@/blocks/PricingSection'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
-  admin: { useAsTitle: 'title' },
+  access: {
+    read: () => true,
+  },
   fields: [
-    { name: 'title', type: 'text', required: true },
-    { name: 'slug', type: 'text', required: true, unique: true },
-
+    { name: 'title', type: 'text', localized: true, required: true },
+    { name: 'slug', type: 'text',  unique: true },
     {
-      name: 'globalSections',
-      label: 'Include Global Sections',
-      type: 'select',
-      hasMany: true,
-      options: [
-        { label: 'Hero Section', value: 'hero' },
-        { label: 'Logo Carousel', value: 'logoCarousel' },
-        { label: 'Reviews Section', value: 'reviews' },
-        { label: 'Footer Section', value: 'footer' },
+      name: 'sections',
+      type: 'blocks',
+      blocks: [
+        heroSection,
+        pricingSection,
       ],
-      admin: {
-        description:
-          'Select which global sections to include on this page. Their content comes from Global Sections settings.',
-      },
     },
     {
       name: 'hero',
       type: 'group',
       label: 'Hero Section',
       fields: [
+        { name: 'enabled', type: 'checkbox', localized: true, defaultValue: true },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'hero',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
+      ],
+    },
+    {
+      name: 'course_hero',
+      type: 'group',
+      label: 'Hero Section',
+      fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
-        { name: 'heading', type: 'text', defaultValue: 'hero' },
-        { name: 'color', type: 'text', },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'course_hero',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
       ],
     },
     {
@@ -42,8 +59,66 @@ export const Pages: CollectionConfig = {
       label: 'Hero Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
-        { name: 'heading', type: 'text', defaultValue: 'hero' },
-        { name: 'color', type: 'text', },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'logoCarousel',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
+      ],
+    },
+    {
+      name: 'features',
+      type: 'group',
+      label: 'Hero Section',
+      fields: [
+        { name: 'enabled', type: 'checkbox', defaultValue: true },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'features',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
+      ],
+    },
+    {
+      name: 'how_it_works',
+      type: 'group',
+      label: 'Hero Section',
+      fields: [
+        { name: 'enabled', type: 'checkbox', defaultValue: true },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'how_it_works',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
+      ],
+    },
+    {
+      name: 'comparison_table',
+      type: 'group',
+      label: 'Hero Section',
+      fields: [
+        { name: 'enabled', type: 'checkbox', defaultValue: true },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'comparison_table',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
       ],
     },
     {
@@ -52,22 +127,34 @@ export const Pages: CollectionConfig = {
       label: 'Hero Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
-        { name: 'heading', type: 'text', defaultValue: 'hero' },
-        { name: 'color', type: 'text', },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'reviews',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
       ],
     },
     {
-      name: 'footer',
+      name: 'faqs',
       type: 'group',
       label: 'Hero Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
-        { name: 'heading', type: 'text', defaultValue: 'hero' },
-        { name: 'color', type: 'text', },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'faqs',
+          admin: {
+            readOnly: true,
+          },
+        },
+        { name: 'color', type: 'text' },
       ],
     },
-   
-
     {
       name: 'localSections',
       type: 'blocks',
