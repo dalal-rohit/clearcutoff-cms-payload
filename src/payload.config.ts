@@ -12,12 +12,17 @@ import { Media } from './collections/Media'
 import Courses from './collections/Courses'
 import { Pages } from './collections/Pages'
 import { GlobalSections } from './globals/GlobalSections'
-import endpoints from './endpoints';
+import endpoints from './endpoints'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  cors: [
+    'http://localhost:3000', // Next.js frontend
+    'http://localhost:3001', // Payload admin (if needed)
+    '*', // allow all for dev
+  ],
   serverURL: process.env.SERVER_URL,
   localization: {
     locales: [

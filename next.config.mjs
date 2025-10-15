@@ -2,6 +2,14 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+   images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cc-teaching-content-ind.s3.dualstack.ap-south-1.amazonaws.com",
+      },
+    ],
+  },
   // Your Next.js config here
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {

@@ -195,6 +195,7 @@ export interface Course {
         id?: string | null;
       }[]
     | null;
+  hero: number | User;
   sections?:
     | (
         | {
@@ -478,6 +479,7 @@ export interface CoursesSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  hero?: T;
   sections?:
     | T
     | {
@@ -703,6 +705,12 @@ export interface GlobalSection {
     enabled?: boolean | null;
     eyebrow?: string | null;
     heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
     subheading?: string | null;
     ctaText?: string | null;
     ctaLink?: string | null;
@@ -872,6 +880,12 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
         enabled?: T;
         eyebrow?: T;
         heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
         subheading?: T;
         ctaText?: T;
         ctaLink?: T;

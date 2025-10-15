@@ -18,12 +18,16 @@ const Courses: CollectionConfig = {
       ],
     },
     {
+      name: 'hero',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
+     
+    },
+    {
       name: 'sections',
       type: 'blocks',
-      blocks: [
-        heroSection,
-        pricingSection,
-      ],
+      blocks: [heroSection, pricingSection],
     },
   ],
 }
