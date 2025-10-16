@@ -203,22 +203,6 @@ export const GlobalSections: GlobalConfig = {
         },
       ],
     },
-    {
-      name: 'footer',
-      type: 'group',
-      label: 'Footer Section',
-      fields: [
-        { name: 'enabled', type: 'checkbox', defaultValue: true },
-        { name: 'copyright', type: 'text' },
-        {
-          name: 'links',
-          type: 'array',
-          fields: [
-            { name: 'label', type: 'text' },
-            { name: 'url', type: 'text' },
-          ],
-        },
-      ],
-    },
+  
   ],
 }
