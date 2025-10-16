@@ -52,6 +52,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    idType: "serial",
+    allowIDOnCreate : true,
+    push : true,
+    migrationDir: path.resolve(dirname, 'payload-migrations'),
+    blocksAsJSON: true
   }),
   sharp,
   plugins: [
