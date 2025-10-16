@@ -861,13 +861,28 @@ export interface GlobalSection {
         }[]
       | null;
   };
-  footer?: {
+  testing?: {
     enabled?: boolean | null;
-    copyright?: string | null;
-    links?:
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
       | {
-          label?: string | null;
-          url?: string | null;
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
+    categories?:
+      | {
+          category?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    faqs?:
+      | {
+          category?: string | null;
+          question?: string | null;
+          answer?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -1056,16 +1071,31 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  footer?:
+  testing?:
     | T
     | {
         enabled?: T;
-        copyright?: T;
-        links?:
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
           | T
           | {
-              label?: T;
-              url?: T;
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
+        categories?:
+          | T
+          | {
+              category?: T;
+              id?: T;
+            };
+        faqs?:
+          | T
+          | {
+              category?: T;
+              question?: T;
+              answer?: T;
               id?: T;
             };
       };
