@@ -1,6 +1,7 @@
 // src/globals/GlobalSections.ts
 import { GlobalConfig } from 'payload'
 
+
 export const GlobalSections: GlobalConfig = {
   slug: 'global-sections',
   label: 'Global Sections',
