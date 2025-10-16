@@ -39,7 +39,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'course_hero',
       type: 'group',
-      label: 'Hero Section',
+      label: 'Course Hero Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
@@ -56,7 +56,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'logoCarousel',
       type: 'group',
-      label: 'Hero Section',
+      label: 'logoCarousel Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
@@ -73,7 +73,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'features',
       type: 'group',
-      label: 'Hero Section',
+      label: 'features Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
@@ -90,7 +90,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'how_it_works',
       type: 'group',
-      label: 'Hero Section',
+      label: 'how_it_works Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
@@ -107,7 +107,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'comparison_table',
       type: 'group',
-      label: 'Hero Section',
+      label: 'comparison_table Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
@@ -124,7 +124,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'reviews',
       type: 'group',
-      label: 'Hero Section',
+      label: 'reviews Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
@@ -141,7 +141,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'faqs',
       type: 'group',
-      label: 'Hero Section',
+      label: 'faqs Section',
       fields: [
         { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
