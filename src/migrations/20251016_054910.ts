@@ -98,6 +98,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "courses" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"slug" varchar,
+  	"hero_id" integer NOT NULL,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
@@ -229,6 +230,19 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"batch" numeric,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE "global_sections_hero_highlight" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL
+  );
+  
+  CREATE TABLE "global_sections_hero_highlight_locales" (
+  	"text" varchar,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" varchar NOT NULL
   );
   
   CREATE TABLE "global_sections_logo_carousel_logos" (
@@ -491,6 +505,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "courses_blocks_pricing_section_cards_features" ADD CONSTRAINT "courses_blocks_pricing_section_cards_features_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."courses_blocks_pricing_section_cards"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "courses_blocks_pricing_section_cards" ADD CONSTRAINT "courses_blocks_pricing_section_cards_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."courses_blocks_pricing_section"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "courses_blocks_pricing_section" ADD CONSTRAINT "courses_blocks_pricing_section_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."courses"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "courses" ADD CONSTRAINT "courses_hero_id_users_id_fk" FOREIGN KEY ("hero_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "courses_locales" ADD CONSTRAINT "courses_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."courses"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_hero_section" ADD CONSTRAINT "pages_blocks_hero_section_background_image_id_media_id_fk" FOREIGN KEY ("background_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "pages_blocks_hero_section" ADD CONSTRAINT "pages_blocks_hero_section_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
@@ -505,6 +520,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "global_sections_hero_highlight" ADD CONSTRAINT "global_sections_hero_highlight_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."global_sections"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "global_sections_hero_highlight_locales" ADD CONSTRAINT "global_sections_hero_highlight_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."global_sections_hero_highlight"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "global_sections_logo_carousel_logos" ADD CONSTRAINT "global_sections_logo_carousel_logos_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."global_sections"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "global_sections_logo_carousel_logos_locales" ADD CONSTRAINT "global_sections_logo_carousel_logos_locales_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "global_sections_logo_carousel_logos_locales" ADD CONSTRAINT "global_sections_logo_carousel_logos_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."global_sections_logo_carousel_logos"("id") ON DELETE cascade ON UPDATE no action;
@@ -563,6 +580,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "courses_blocks_pricing_section_parent_id_idx" ON "courses_blocks_pricing_section" USING btree ("_parent_id");
   CREATE INDEX "courses_blocks_pricing_section_path_idx" ON "courses_blocks_pricing_section" USING btree ("_path");
   CREATE UNIQUE INDEX "courses_slug_idx" ON "courses" USING btree ("slug");
+  CREATE INDEX "courses_hero_idx" ON "courses" USING btree ("hero_id");
   CREATE INDEX "courses_updated_at_idx" ON "courses" USING btree ("updated_at");
   CREATE INDEX "courses_created_at_idx" ON "courses" USING btree ("created_at");
   CREATE UNIQUE INDEX "courses_locales_locale_parent_id_unique" ON "courses_locales" USING btree ("_locale","_parent_id");
@@ -600,6 +618,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
   CREATE INDEX "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
   CREATE INDEX "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
+  CREATE INDEX "global_sections_hero_highlight_order_idx" ON "global_sections_hero_highlight" USING btree ("_order");
+  CREATE INDEX "global_sections_hero_highlight_parent_id_idx" ON "global_sections_hero_highlight" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX "global_sections_hero_highlight_locales_locale_parent_id_unique" ON "global_sections_hero_highlight_locales" USING btree ("_locale","_parent_id");
   CREATE INDEX "global_sections_logo_carousel_logos_order_idx" ON "global_sections_logo_carousel_logos" USING btree ("_order");
   CREATE INDEX "global_sections_logo_carousel_logos_parent_id_idx" ON "global_sections_logo_carousel_logos" USING btree ("_parent_id");
   CREATE INDEX "global_sections_logo_carousel_logos_logo_idx" ON "global_sections_logo_carousel_logos_locales" USING btree ("logo_id","_locale");
@@ -676,6 +697,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "payload_preferences" CASCADE;
   DROP TABLE "payload_preferences_rels" CASCADE;
   DROP TABLE "payload_migrations" CASCADE;
+  DROP TABLE "global_sections_hero_highlight" CASCADE;
+  DROP TABLE "global_sections_hero_highlight_locales" CASCADE;
   DROP TABLE "global_sections_logo_carousel_logos" CASCADE;
   DROP TABLE "global_sections_logo_carousel_logos_locales" CASCADE;
   DROP TABLE "global_sections_features_highlight" CASCADE;
