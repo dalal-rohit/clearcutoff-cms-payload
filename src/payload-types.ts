@@ -726,8 +726,6 @@ export interface GlobalSection {
         }[]
       | null;
     course_hero_subheading?: string | null;
-    course_hero_subheading1?: string | null;
-    course_hero_subheading2?: string | null;
     course_hero_cta1_Text?: string | null;
     course_hero_cta2_Text?: string | null;
   };
@@ -911,8 +909,6 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
               id?: T;
             };
         course_hero_subheading?: T;
-        course_hero_subheading1?: T;
-        course_hero_subheading2?: T;
         course_hero_cta1_Text?: T;
         course_hero_cta2_Text?: T;
       };

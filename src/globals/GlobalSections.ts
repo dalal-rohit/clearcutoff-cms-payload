@@ -1,7 +1,6 @@
 // src/globals/GlobalSections.ts
 import { GlobalConfig } from 'payload'
 
-
 export const GlobalSections: GlobalConfig = {
   slug: 'global-sections',
   label: 'Global Sections',
@@ -42,8 +41,6 @@ export const GlobalSections: GlobalConfig = {
           fields: [{ name: 'text', type: 'text', localized: true }],
         },
         { name: 'course_hero_subheading', type: 'textarea', localized: true },
-        { name: 'course_hero_subheading1', type: 'textarea', localized: true },
-        { name: 'course_hero_subheading2', type: 'textarea', localized: true },
         { name: 'course_hero_cta1_Text', type: 'text', localized: true },
         { name: 'course_hero_cta2_Text', type: 'text', localized: true },
       ],
