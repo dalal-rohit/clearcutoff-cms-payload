@@ -712,16 +712,22 @@ export interface GlobalSection {
         }[]
       | null;
     subheading?: string | null;
-    ctaText?: string | null;
-    ctaLink?: string | null;
+    cta1_Text?: string | null;
+    cta2_Text?: string | null;
     backgroundImage?: (number | null) | Media;
   };
   course_hero?: {
     course_hero_eyebrow?: string | null;
     course_hero_heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
     course_hero_subheading?: string | null;
-    course_hero_ctaText?: string | null;
-    course_hero_ctaLink?: string | null;
+    course_hero_cta1_Text?: string | null;
+    course_hero_cta2_Text?: string | null;
   };
   logoCarousel?: {
     enabled?: boolean | null;
@@ -887,8 +893,8 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
               id?: T;
             };
         subheading?: T;
-        ctaText?: T;
-        ctaLink?: T;
+        cta1_Text?: T;
+        cta2_Text?: T;
         backgroundImage?: T;
       };
   course_hero?:
@@ -896,9 +902,15 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
     | {
         course_hero_eyebrow?: T;
         course_hero_heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
         course_hero_subheading?: T;
-        course_hero_ctaText?: T;
-        course_hero_ctaLink?: T;
+        course_hero_cta1_Text?: T;
+        course_hero_cta2_Text?: T;
       };
   logoCarousel?:
     | T

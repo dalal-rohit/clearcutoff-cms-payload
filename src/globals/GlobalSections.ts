@@ -7,7 +7,7 @@ export const GlobalSections: GlobalConfig = {
   access: {
     read: () => true,
   },
-  
+
   fields: [
     {
       name: 'hero',
@@ -23,8 +23,8 @@ export const GlobalSections: GlobalConfig = {
           fields: [{ name: 'text', type: 'text', localized: true }],
         },
         { name: 'subheading', type: 'textarea', localized: true },
-        { name: 'ctaText', type: 'text', localized: true },
-        { name: 'ctaLink', type: 'text', localized: true },
+        { name: 'cta1_Text', type: 'text', localized: true },
+        { name: 'cta2_Text', type: 'text', localized: true },
         { name: 'backgroundImage', type: 'upload', relationTo: 'media' },
       ],
     },
@@ -35,9 +35,14 @@ export const GlobalSections: GlobalConfig = {
       fields: [
         { name: 'course_hero_eyebrow', type: 'text', localized: true },
         { name: 'course_hero_heading', type: 'text', localized: true },
+        {
+          name: 'highlight',
+          type: 'array',
+          fields: [{ name: 'text', type: 'text', localized: true }],
+        },
         { name: 'course_hero_subheading', type: 'textarea', localized: true },
-        { name: 'course_hero_ctaText', type: 'text', localized: true },
-        { name: 'course_hero_ctaLink', type: 'text', localized: true },
+        { name: 'course_hero_cta1_Text', type: 'text', localized: true },
+        { name: 'course_hero_cta2_Text', type: 'text', localized: true },
       ],
     },
     {
