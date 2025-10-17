@@ -1,8 +1,8 @@
 import { GlobalConfig } from 'payload'
 
 export const FAQs: GlobalConfig = {
-  slug: 'global-sections',
-  label: 'Global Sections',
+  slug: 'faqs',
+  label: 'FAQs',
   access: {
     read: () => true,
   },

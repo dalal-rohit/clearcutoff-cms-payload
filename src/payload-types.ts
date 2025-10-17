@@ -89,9 +89,11 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
+    faqs: Faq;
     'global-sections': GlobalSection;
   };
   globalsSelect: {
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     'global-sections': GlobalSectionsSelect<false> | GlobalSectionsSelect<true>;
   };
   locale: 'en' | 'hi';
@@ -320,78 +322,6 @@ export interface Page {
     color?: string | null;
   };
   localSections?:
-    | (
-        | {
-            enabled?: boolean | null;
-            heading: string;
-            subheading?: string | null;
-            ctaText?: string | null;
-            ctaLink?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'heroSection';
-          }
-        | {
-            enabled?: boolean | null;
-            title?: string | null;
-            showCoursePrice?: boolean | null;
-            cards?:
-              | {
-                  planName?: string | null;
-                  price?: number | null;
-                  features?:
-                    | {
-                        feature?: string | null;
-                        id?: string | null;
-                      }[]
-                    | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'pricingSection';
-          }
-      )[]
-    | null;
-  localSections1?:
-    | (
-        | {
-            enabled?: boolean | null;
-            heading: string;
-            subheading?: string | null;
-            ctaText?: string | null;
-            ctaLink?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'heroSection';
-          }
-        | {
-            enabled?: boolean | null;
-            title?: string | null;
-            showCoursePrice?: boolean | null;
-            cards?:
-              | {
-                  planName?: string | null;
-                  price?: number | null;
-                  features?:
-                    | {
-                        feature?: string | null;
-                        id?: string | null;
-                      }[]
-                    | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'pricingSection';
-          }
-      )[]
-    | null;
-  localSections2?:
     | (
         | {
             enabled?: boolean | null;
@@ -732,82 +662,6 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
-  localSections1?:
-    | T
-    | {
-        heroSection?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              subheading?: T;
-              ctaText?: T;
-              ctaLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        pricingSection?:
-          | T
-          | {
-              enabled?: T;
-              title?: T;
-              showCoursePrice?: T;
-              cards?:
-                | T
-                | {
-                    planName?: T;
-                    price?: T;
-                    features?:
-                      | T
-                      | {
-                          feature?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-      };
-  localSections2?:
-    | T
-    | {
-        heroSection?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              subheading?: T;
-              ctaText?: T;
-              ctaLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        pricingSection?:
-          | T
-          | {
-              enabled?: T;
-              title?: T;
-              showCoursePrice?: T;
-              cards?:
-                | T
-                | {
-                    planName?: T;
-                    price?: T;
-                    features?:
-                      | T
-                      | {
-                          feature?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -842,6 +696,39 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  enabled?: boolean | null;
+  eyebrow?: string | null;
+  heading?: string | null;
+  highlight?:
+    | {
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  subheading?: string | null;
+  categories?:
+    | {
+        category?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqs?:
+    | {
+        category?: string | null;
+        question?: string | null;
+        answer?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -983,60 +870,41 @@ export interface GlobalSection {
         }[]
       | null;
   };
-  faqs?: {
-    enabled?: boolean | null;
-    eyebrow?: string | null;
-    heading?: string | null;
-    highlight?:
-      | {
-          text?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    subheading?: string | null;
-    categories?:
-      | {
-          category?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    faqs?:
-      | {
-          category?: string | null;
-          question?: string | null;
-          answer?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  faqs_yesterday?: {
-    enabled?: boolean | null;
-    eyebrow?: string | null;
-    heading?: string | null;
-    highlight?:
-      | {
-          text?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    subheading?: string | null;
-    categories?:
-      | {
-          category?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    faqs?:
-      | {
-          category?: string | null;
-          question?: string | null;
-          answer?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  enabled?: T;
+  eyebrow?: T;
+  heading?: T;
+  highlight?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  subheading?: T;
+  categories?:
+    | T
+    | {
+        category?: T;
+        id?: T;
+      };
+  faqs?:
+    | T
+    | {
+        category?: T;
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1188,62 +1056,6 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
               field?: T;
               review?: T;
               rating?: T;
-              id?: T;
-            };
-      };
-  faqs?:
-    | T
-    | {
-        enabled?: T;
-        eyebrow?: T;
-        heading?: T;
-        highlight?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        subheading?: T;
-        categories?:
-          | T
-          | {
-              category?: T;
-              id?: T;
-            };
-        faqs?:
-          | T
-          | {
-              category?: T;
-              question?: T;
-              answer?: T;
-              id?: T;
-            };
-      };
-  faqs_yesterday?:
-    | T
-    | {
-        enabled?: T;
-        eyebrow?: T;
-        heading?: T;
-        highlight?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        subheading?: T;
-        categories?:
-          | T
-          | {
-              category?: T;
-              id?: T;
-            };
-        faqs?:
-          | T
-          | {
-              category?: T;
-              question?: T;
-              answer?: T;
               id?: T;
             };
       };
