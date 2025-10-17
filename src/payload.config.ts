@@ -14,6 +14,7 @@ import { Pages } from './collections/Pages'
 import { GlobalSections } from './globals/GlobalSections'
 import endpoints from './endpoints'
 import { FAQs } from './globals/FAQs'
+import { Reviews } from './globals/Reviews'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -43,6 +44,7 @@ export default buildConfig({
   endpoints,
   globals: [
     FAQs,
+    Reviews,
     GlobalSections, // Register the global here
   ],
   editor: lexicalEditor(),
