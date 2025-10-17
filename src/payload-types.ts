@@ -90,10 +90,12 @@ export interface Config {
   };
   globals: {
     faqs: Faq;
+    reviews: Review;
     'global-sections': GlobalSection;
   };
   globalsSelect: {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'global-sections': GlobalSectionsSelect<false> | GlobalSectionsSelect<true>;
   };
   locale: 'en' | 'hi';
@@ -732,6 +734,42 @@ export interface Faq {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  enabled?: boolean | null;
+  eyebrow?: string | null;
+  heading?: string | null;
+  highlight?:
+    | {
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  subheading?: string | null;
+  reviews?:
+    | {
+        name?: string | null;
+        profile?: (number | null) | Media;
+        gender?: ('male' | 'female') | null;
+        profession?: string | null;
+        review?: string | null;
+        reviewHighlight?:
+          | {
+              text?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        rating?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "global-sections".
  */
 export interface GlobalSection {
@@ -877,6 +915,42 @@ export interface FaqsSelect<T extends boolean = true> {
         category?: T;
         question?: T;
         answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  enabled?: T;
+  eyebrow?: T;
+  heading?: T;
+  highlight?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  subheading?: T;
+  reviews?:
+    | T
+    | {
+        name?: T;
+        profile?: T;
+        gender?: T;
+        profession?: T;
+        review?: T;
+        reviewHighlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        rating?: T;
         id?: T;
       };
   updatedAt?: T;

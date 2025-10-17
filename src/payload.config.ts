@@ -15,6 +15,7 @@ import { GlobalSections } from './globals/GlobalSections'
 import endpoints from './endpoints'
 import { FAQs } from './globals/FAQs'
 import { Reviews } from './globals/Reviews'
+import { Questions } from './collections/Questions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,7 +41,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Pages],
+  collections: [Users, Media, Courses, Pages, Questions],
   endpoints,
   globals: [
     FAQs,
@@ -56,11 +57,11 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
-    idType: "serial",
-    allowIDOnCreate : true,
-    push : true,
+    idType: 'serial',
+    allowIDOnCreate: true,
+    push: true,
     migrationDir: path.resolve(dirname, 'payload-migrations'),
-    blocksAsJSON: true
+    blocksAsJSON: true,
   }),
   sharp,
   plugins: [
