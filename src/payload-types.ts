@@ -847,29 +847,6 @@ export interface GlobalSection {
         }[]
       | null;
   };
-  reviews?: {
-    enabled?: boolean | null;
-    eyebrow?: string | null;
-    heading?: string | null;
-    highlight?:
-      | {
-          text?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-    subheading?: string | null;
-    reviews?:
-      | {
-          name?: string | null;
-          profile?: (number | null) | Media;
-          gender?: ('male' | 'female') | null;
-          field?: string | null;
-          review?: string | null;
-          rating?: number | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1031,31 +1008,6 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
           | T
           | {
               text?: T;
-              id?: T;
-            };
-      };
-  reviews?:
-    | T
-    | {
-        enabled?: T;
-        eyebrow?: T;
-        heading?: T;
-        highlight?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        subheading?: T;
-        reviews?:
-          | T
-          | {
-              name?: T;
-              profile?: T;
-              gender?: T;
-              field?: T;
-              review?: T;
-              rating?: T;
               id?: T;
             };
       };
