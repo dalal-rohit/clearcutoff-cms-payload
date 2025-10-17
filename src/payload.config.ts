@@ -16,6 +16,7 @@ import endpoints from './endpoints'
 import { FAQs } from './globals/FAQs'
 import { Reviews } from './globals/Reviews'
 import { Questions } from './collections/Questions'
+import { Footers } from './globals/Footers'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,6 +45,7 @@ export default buildConfig({
   collections: [Users, Media, Courses, Pages, Questions],
   endpoints,
   globals: [
+    Footers,
     FAQs,
     Reviews,
     GlobalSections, // Register the global here
