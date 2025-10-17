@@ -161,5 +161,17 @@ export const Pages: CollectionConfig = {
       label: 'Page-Specific Sections',
       blocks: [heroSection, pricingSection],
     },
+    {
+      name: 'localSections1',
+      type: 'blocks',
+      label: 'Page-Specific1 Sections',
+      blocks: [heroSection, pricingSection],
+    },
+    {
+      name: 'localSections2',
+      type: 'blocks',
+      label: 'Page-Specific2 Sections',
+      blocks: [heroSection, pricingSection],
+    },
   ],
 }

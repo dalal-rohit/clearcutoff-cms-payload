@@ -355,6 +355,78 @@ export interface Page {
           }
       )[]
     | null;
+  localSections1?:
+    | (
+        | {
+            enabled?: boolean | null;
+            heading: string;
+            subheading?: string | null;
+            ctaText?: string | null;
+            ctaLink?: string | null;
+            backgroundImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'heroSection';
+          }
+        | {
+            enabled?: boolean | null;
+            title?: string | null;
+            showCoursePrice?: boolean | null;
+            cards?:
+              | {
+                  planName?: string | null;
+                  price?: number | null;
+                  features?:
+                    | {
+                        feature?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pricingSection';
+          }
+      )[]
+    | null;
+  localSections2?:
+    | (
+        | {
+            enabled?: boolean | null;
+            heading: string;
+            subheading?: string | null;
+            ctaText?: string | null;
+            ctaLink?: string | null;
+            backgroundImage?: (number | null) | Media;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'heroSection';
+          }
+        | {
+            enabled?: boolean | null;
+            title?: string | null;
+            showCoursePrice?: boolean | null;
+            cards?:
+              | {
+                  planName?: string | null;
+                  price?: number | null;
+                  features?:
+                    | {
+                        feature?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pricingSection';
+          }
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -660,6 +732,82 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
+  localSections1?:
+    | T
+    | {
+        heroSection?:
+          | T
+          | {
+              enabled?: T;
+              heading?: T;
+              subheading?: T;
+              ctaText?: T;
+              ctaLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricingSection?:
+          | T
+          | {
+              enabled?: T;
+              title?: T;
+              showCoursePrice?: T;
+              cards?:
+                | T
+                | {
+                    planName?: T;
+                    price?: T;
+                    features?:
+                      | T
+                      | {
+                          feature?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
+  localSections2?:
+    | T
+    | {
+        heroSection?:
+          | T
+          | {
+              enabled?: T;
+              heading?: T;
+              subheading?: T;
+              ctaText?: T;
+              ctaLink?: T;
+              backgroundImage?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricingSection?:
+          | T
+          | {
+              enabled?: T;
+              title?: T;
+              showCoursePrice?: T;
+              cards?:
+                | T
+                | {
+                    planName?: T;
+                    price?: T;
+                    features?:
+                      | T
+                      | {
+                          feature?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -861,6 +1009,32 @@ export interface GlobalSection {
         }[]
       | null;
   };
+  faqs_yesterday?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    heading?: string | null;
+    highlight?:
+      | {
+          text?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    subheading?: string | null;
+    categories?:
+      | {
+          category?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    faqs?:
+      | {
+          category?: string | null;
+          question?: string | null;
+          answer?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1018,6 +1192,34 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
             };
       };
   faqs?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        heading?: T;
+        highlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        subheading?: T;
+        categories?:
+          | T
+          | {
+              category?: T;
+              id?: T;
+            };
+        faqs?:
+          | T
+          | {
+              category?: T;
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
+  faqs_yesterday?:
     | T
     | {
         enabled?: T;
