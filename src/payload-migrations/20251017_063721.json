@@ -1,5 +1,5 @@
 {
-  "id": "37001cd8-3b98-4a27-b351-74aa92b98398",
+  "id": "0bf6c2b6-340d-4313-8c6c-c05fcb852cc5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -2404,6 +2404,156 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.reviews_reviews_review_highlight": {
+      "name": "reviews_reviews_review_highlight",
+      "schema": "",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "varchar",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "reviews_reviews_review_highlight_order_idx": {
+          "name": "reviews_reviews_review_highlight_order_idx",
+          "columns": [
+            {
+              "expression": "_order",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "reviews_reviews_review_highlight_parent_id_idx": {
+          "name": "reviews_reviews_review_highlight_parent_id_idx",
+          "columns": [
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "reviews_reviews_review_highlight_parent_id_fk": {
+          "name": "reviews_reviews_review_highlight_parent_id_fk",
+          "tableFrom": "reviews_reviews_review_highlight",
+          "tableTo": "reviews_reviews",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.reviews_reviews_review_highlight_locales": {
+      "name": "reviews_reviews_review_highlight_locales",
+      "schema": "",
+      "columns": {
+        "text": {
+          "name": "text",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "_locale": {
+          "name": "_locale",
+          "type": "_locales",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "reviews_reviews_review_highlight_locales_locale_parent_id_unique": {
+          "name": "reviews_reviews_review_highlight_locales_locale_parent_id_unique",
+          "columns": [
+            {
+              "expression": "_locale",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "_parent_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "reviews_reviews_review_highlight_locales_parent_id_fk": {
+          "name": "reviews_reviews_review_highlight_locales_parent_id_fk",
+          "tableFrom": "reviews_reviews_review_highlight_locales",
+          "tableTo": "reviews_reviews_review_highlight",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.reviews_reviews": {
       "name": "reviews_reviews",
       "schema": "",
@@ -2537,8 +2687,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "field": {
-          "name": "field",
+        "profession": {
+          "name": "profession",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
