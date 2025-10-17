@@ -63,6 +63,40 @@ export const GlobalSections: GlobalConfig = {
       ],
     },
     {
+      name: 'logoCarousel1',
+      type: 'group',
+      label: 'Logo Carousel',
+      fields: [
+        { name: 'enabled', type: 'checkbox', defaultValue: true },
+        {
+          name: 'logos',
+          type: 'array',
+          fields: [
+            { name: 'heading', type: 'text', localized: true },
+            { name: 'subheading', type: 'textarea', localized: true },
+            { name: 'logo', type: 'upload', relationTo: 'media', localized: true },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'logoCarousel2',
+      type: 'group',
+      label: 'Logo Carousel',
+      fields: [
+        { name: 'enabled', type: 'checkbox', defaultValue: true },
+        {
+          name: 'logos',
+          type: 'array',
+          fields: [
+            { name: 'heading', type: 'text', localized: true },
+            { name: 'subheading', type: 'textarea', localized: true },
+            { name: 'logo', type: 'upload', relationTo: 'media', localized: true },
+          ],
+        },
+      ],
+    },
+    {
       name: 'features',
       type: 'group',
       label: 'Features Section',
