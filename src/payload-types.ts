@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     courses: Course;
     pages: Page;
+    questions: Question;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +82,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     courses: CoursesSelect<false> | CoursesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    questions: QuestionsSelect<false> | QuestionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -89,11 +91,13 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
+    footers: Footer;
     faqs: Faq;
     reviews: Review;
     'global-sections': GlobalSection;
   };
   globalsSelect: {
+    footers: FootersSelect<false> | FootersSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'global-sections': GlobalSectionsSelect<false> | GlobalSectionsSelect<true>;
@@ -174,68 +178,21 @@ export interface Media {
  */
 export interface Course {
   id: number;
-  title: string;
-  slug?: string | null;
-  description?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  highlights?:
-    | {
-        text?: string | null;
-        icon?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  hero: number | User;
-  sections?:
-    | (
-        | {
-            enabled?: boolean | null;
-            heading: string;
-            subheading?: string | null;
-            ctaText?: string | null;
-            ctaLink?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'heroSection';
-          }
-        | {
-            enabled?: boolean | null;
-            title?: string | null;
-            showCoursePrice?: boolean | null;
-            cards?:
-              | {
-                  planName?: string | null;
-                  price?: number | null;
-                  features?:
-                    | {
-                        feature?: string | null;
-                        id?: string | null;
-                      }[]
-                    | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'pricingSection';
-          }
-      )[]
-    | null;
+  exam_id: string;
+  name?: string | null;
+  short_name: string;
+  state?: string | null;
+  conducting_body?: string | null;
+  logo_url: string;
+  exam_type: string;
+  exam_frequency: string;
+  evaluation_type: string;
+  upcoming_exam: string;
+  status: 'active' | 'inactive' | 'archived';
+  rating: string;
+  price: number;
+  combo_price?: number | null;
+  marking_schema?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -364,6 +321,33 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "questions".
+ */
+export interface Question {
+  id: number;
+  question_id?: string | null;
+  exam_instance_id?: string | null;
+  stage_id?: string | null;
+  label_id?: string | null;
+  section_id?: string | null;
+  question_number?: string | null;
+  question_text?: string | null;
+  question_image_url?: string | null;
+  option_1_text?: string | null;
+  option_1_image_url?: string | null;
+  option_2_text?: string | null;
+  option_2_image_url?: string | null;
+  option_3_text?: string | null;
+  option_3_image_url?: string | null;
+  option_4_text?: string | null;
+  option_4_image_url?: string | null;
+  correct_option?: number | null;
+  explanation?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -384,6 +368,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'questions';
+        value: number | Question;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -472,56 +460,21 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "courses_select".
  */
 export interface CoursesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  description?: T;
-  content?: T;
-  highlights?:
-    | T
-    | {
-        text?: T;
-        icon?: T;
-        id?: T;
-      };
-  hero?: T;
-  sections?:
-    | T
-    | {
-        heroSection?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              subheading?: T;
-              ctaText?: T;
-              ctaLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        pricingSection?:
-          | T
-          | {
-              enabled?: T;
-              title?: T;
-              showCoursePrice?: T;
-              cards?:
-                | T
-                | {
-                    planName?: T;
-                    price?: T;
-                    features?:
-                      | T
-                      | {
-                          feature?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-      };
+  exam_id?: T;
+  name?: T;
+  short_name?: T;
+  state?: T;
+  conducting_body?: T;
+  logo_url?: T;
+  exam_type?: T;
+  exam_frequency?: T;
+  evaluation_type?: T;
+  upcoming_exam?: T;
+  status?: T;
+  rating?: T;
+  price?: T;
+  combo_price?: T;
+  marking_schema?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -669,6 +622,32 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "questions_select".
+ */
+export interface QuestionsSelect<T extends boolean = true> {
+  question_id?: T;
+  exam_instance_id?: T;
+  stage_id?: T;
+  label_id?: T;
+  section_id?: T;
+  question_number?: T;
+  question_text?: T;
+  question_image_url?: T;
+  option_1_text?: T;
+  option_1_image_url?: T;
+  option_2_text?: T;
+  option_2_image_url?: T;
+  option_3_text?: T;
+  option_3_image_url?: T;
+  option_4_text?: T;
+  option_4_image_url?: T;
+  correct_option?: T;
+  explanation?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -698,6 +677,37 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers".
+ */
+export interface Footer {
+  id: number;
+  copyright: string;
+  pages?:
+    | {
+        name: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  socials?:
+    | {
+        link: string;
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  contacts?:
+    | {
+        contact: string;
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -887,6 +897,37 @@ export interface GlobalSection {
   };
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers_select".
+ */
+export interface FootersSelect<T extends boolean = true> {
+  copyright?: T;
+  pages?:
+    | T
+    | {
+        name?: T;
+        link?: T;
+        id?: T;
+      };
+  socials?:
+    | T
+    | {
+        link?: T;
+        icon?: T;
+        id?: T;
+      };
+  contacts?:
+    | T
+    | {
+        contact?: T;
+        icon?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
