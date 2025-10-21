@@ -72,6 +72,9 @@ export interface Config {
     courses: Course;
     pages: Page;
     questions: Question;
+    'e-navigation': ENavigation;
+    'e-stage': EStage;
+    'e-sections': ESection;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +86,9 @@ export interface Config {
     courses: CoursesSelect<false> | CoursesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     questions: QuestionsSelect<false> | QuestionsSelect<true>;
+    'e-navigation': ENavigationSelect<false> | ENavigationSelect<true>;
+    'e-stage': EStageSelect<false> | EStageSelect<true>;
+    'e-sections': ESectionsSelect<false> | ESectionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -178,19 +184,19 @@ export interface Media {
  */
 export interface Course {
   id: number;
-  exam_id: string;
+  exam_id?: string | null;
   name?: string | null;
-  short_name: string;
+  short_name?: string | null;
   state?: string | null;
   conducting_body?: string | null;
-  logo_url: string;
-  exam_type: string;
-  exam_frequency: string;
-  evaluation_type: string;
-  upcoming_exam: string;
+  logo_url?: string | null;
+  exam_type?: string | null;
+  exam_frequency?: string | null;
+  evaluation_type?: string | null;
+  upcoming_exam?: string | null;
   status: 'active' | 'inactive' | 'archived';
-  rating: string;
-  price: number;
+  rating?: string | null;
+  price?: number | null;
   combo_price?: number | null;
   marking_schema?: string | null;
   updatedAt: string;
@@ -348,6 +354,61 @@ export interface Question {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-navigation".
+ */
+export interface ENavigation {
+  id: number;
+  exam_id?: string | null;
+  parent_id?: string | null;
+  name?: string | null;
+  group?: string | null;
+  status?: string | null;
+  flag_course?: string | null;
+  flag_tests?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-stage".
+ */
+export interface EStage {
+  id: number;
+  stage_id?: string | null;
+  exam_id?: string | null;
+  name?: string | null;
+  stage_type?: string | null;
+  stage_order?: string | null;
+  description?: string | null;
+  duration_mins?: string | null;
+  total_marks?: string | null;
+  total_questions?: string | null;
+  ai_evaluation_supported?: string | null;
+  status?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-sections".
+ */
+export interface ESection {
+  id: number;
+  section_id?: string | null;
+  name?: string | null;
+  type?: string | null;
+  area?: string | null;
+  description?: string | null;
+  total_questions?: string | null;
+  total_marks?: string | null;
+  question_weightage?: string | null;
+  evaluation_type?: string | null;
+  ai_evaluation_supported?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -372,6 +433,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'questions';
         value: number | Question;
+      } | null)
+    | ({
+        relationTo: 'e-navigation';
+        value: number | ENavigation;
+      } | null)
+    | ({
+        relationTo: 'e-stage';
+        value: number | EStage;
+      } | null)
+    | ({
+        relationTo: 'e-sections';
+        value: number | ESection;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -643,6 +716,58 @@ export interface QuestionsSelect<T extends boolean = true> {
   option_4_image_url?: T;
   correct_option?: T;
   explanation?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-navigation_select".
+ */
+export interface ENavigationSelect<T extends boolean = true> {
+  exam_id?: T;
+  parent_id?: T;
+  name?: T;
+  group?: T;
+  status?: T;
+  flag_course?: T;
+  flag_tests?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-stage_select".
+ */
+export interface EStageSelect<T extends boolean = true> {
+  stage_id?: T;
+  exam_id?: T;
+  name?: T;
+  stage_type?: T;
+  stage_order?: T;
+  description?: T;
+  duration_mins?: T;
+  total_marks?: T;
+  total_questions?: T;
+  ai_evaluation_supported?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-sections_select".
+ */
+export interface ESectionsSelect<T extends boolean = true> {
+  section_id?: T;
+  name?: T;
+  type?: T;
+  area?: T;
+  description?: T;
+  total_questions?: T;
+  total_marks?: T;
+  question_weightage?: T;
+  evaluation_type?: T;
+  ai_evaluation_supported?: T;
   updatedAt?: T;
   createdAt?: T;
 }

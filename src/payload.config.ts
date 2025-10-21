@@ -17,6 +17,9 @@ import { FAQs } from './globals/FAQs'
 import { Reviews } from './globals/Reviews'
 import { Questions } from './collections/Questions'
 import { Footers } from './globals/Footers'
+import { ENavigation } from './collections/ENavigation'
+import { EStage } from './collections/EStage'
+import { ESections } from './collections/ESections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -42,7 +45,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Pages, Questions],
+  collections: [Users, Media, Courses, Pages, Questions, ENavigation, EStage, ESections],
   endpoints,
   globals: [
     Footers,

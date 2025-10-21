@@ -5,15 +5,15 @@ import { CollectionConfig } from 'payload'
 const Courses: CollectionConfig = {
   slug: 'courses',
   fields: [
-    { name: 'exam_id', type: 'text', required: true },
-    { name: 'name', type: 'text', localized: true, unique: true },
-    { name: 'short_name', type: 'text', required: true },
-    { name: 'state', type: 'text', localized: true },
-    { name: 'conducting_body', type: 'text', localized: true },
-    { name: 'logo_url', type: 'text', required: true },
-    { name: 'exam_type', type: 'text', required: true },
-    { name: 'exam_frequency', type: 'text', required: true },
-    { name: 'evaluation_type', type: 'text', required: true },
+    { name: 'exam_id', type: 'text' },
+    { name: 'name', type: 'text', maxLength: 355, unique: true },
+    { name: 'short_name', type: 'text', maxLength: 355 },
+    { name: 'state', type: 'text', maxLength: 355 },
+    { name: 'conducting_body', type: 'text', maxLength: 355 },
+    { name: 'logo_url', type: 'text', maxLength: 355 },
+    { name: 'exam_type', type: 'text', maxLength: 355 },
+    { name: 'exam_frequency', type: 'text' },
+    { name: 'evaluation_type', type: 'text' },
 
     //  {
     //   name: "exam_type",
@@ -33,7 +33,7 @@ const Courses: CollectionConfig = {
     //   options: ["objective", "subjective", "mixed"],
     //   required: true,
     // },
-    { name: 'upcoming_exam', type: 'text', required: true },
+    { name: 'upcoming_exam', type: 'text' },
     {
       name: 'status',
       type: 'select',
@@ -41,11 +41,10 @@ const Courses: CollectionConfig = {
       defaultValue: 'active',
       required: true,
     },
-    { name: 'rating', type: 'text', required: true },
+    { name: 'rating', type: 'text' },
     {
       name: 'price',
       type: 'number',
-      required: true,
     },
     {
       name: 'combo_price',
