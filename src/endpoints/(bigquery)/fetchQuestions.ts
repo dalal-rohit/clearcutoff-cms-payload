@@ -5,11 +5,12 @@ const fetchQuestions: Endpoint = {
   method: 'get',
   handler: (async (req: any, res: any, next: any, context: { payload: any }) => {
     try {
-      const limitParam =
+     const limitParam =
         typeof (req.query as any)?.limit === 'string' ? (req.query as any).limit : undefined
       const limit = Number.isFinite(Number(limitParam)) ? Number(limitParam) : 100
+      const exam_id = (req.query.exam_id || 'ctet').toString()
 
-      const url = `${process.env.LARAVEL_API_URL}/api/v1/payload/questions?exam_instance_id=ctet&limit=50`
+      const url = `${process.env.LARAVEL_API_URL}/api/v1/payload/questions?exam_instance_id=${exam_id}&limit=${limit}`
       const response = await fetch(url)
 
       if (!response.ok) {
@@ -30,47 +31,52 @@ const fetchQuestions: Endpoint = {
       let updated = 0
       const failures: { reason: string; item?: unknown }[] = []
 
-      const mapLanguageToLocale = (lang: string): 'en' | 'hi' | undefined => {
-        const norm = (lang || '').toLowerCase().trim()
-        if (!norm) return undefined
-        if (['en', 'eng', 'english'].includes(norm)) return 'en'
-        if (['hi', 'hin', 'hindi', 'हिंदी'].includes(norm)) return 'hi'
-        // Add more mappings as locales are added to payload.config.ts
-        if (['sanskrit', 'संस्कृत', 'sa'].includes(norm)) return undefined // locale not configured yet
-        return undefined
-      }
-
       for (const item of rows) {
         let record: any
         try {
-          const language = item?.language_code ?? item?.languageCode ?? item?.lang ?? ''
-          const locale = mapLanguageToLocale(String(language))
-
-          const qnumRaw = item?.question_number ?? item?.questionNumber
-          const question_number = qnumRaw != null ? String(qnumRaw) : ''
+          const pick = (...keys: string[]) => {
+            for (const k of keys) {
+              if (Object.prototype.hasOwnProperty.call(item, k)) return (item as any)[k]
+            }
+            return undefined
+          }
 
           record = {
-            question_id: item?.question_id ?? item?.questionId ?? item?.id ?? '',
-            exam_instance_id: item?.exam_instance_id ?? item?.examInstanceId ?? '',
-            stage_id: item?.stage_id ?? item?.stageId ?? '',
-            label_id: item?.label_id ?? item?.labelId ?? '',
-            section_id: item?.section_id ?? item?.sectionId ?? '',
-            question_number,
-            question_text: item?.question_text ?? item?.questionText ?? '',
-            question_image_url: item?.question_image_url ?? item?.questionImageUrl ?? '',
-            option_1_text: item?.option_1_text ?? item?.option1Text ?? '',
-            option_1_image_url: item?.option_1_image_url ?? item?.option1ImageUrl ?? '',
-            option_2_text: item?.option_2_text ?? item?.option2Text ?? '',
-            option_2_image_url: item?.option_2_image_url ?? item?.option2ImageUrl ?? '',
-            option_3_text: item?.option_3_text ?? item?.option3Text ?? '',
-            option_3_image_url: item?.option_3_image_url ?? item?.option3ImageUrl ?? '',
-            option_4_text: item?.option_4_text ?? item?.option4Text ?? '',
-            option_4_image_url: item?.option_4_image_url ?? item?.option4ImageUrl ?? '',
-            correct_option:
-              item?.correct_option == null && item?.correctOption == null
-                ? undefined
-                : Number(item?.correct_option ?? item?.correctOption) || 0,
-            explanation: item?.explanation ?? '',
+            question_id: pick('question_id', 'questionId', 'id'),
+            exam_instance_id: pick('exam_instance_id', 'examInstanceId'),
+            stage_id: pick('stage_id', 'stageId'),
+            label_id: pick('label_id', 'labelId'),
+            section_id: pick('section_id', 'sectionId'),
+            question_number: pick('question_number', 'questionNumber'),
+            language_code: pick('language_code', 'languageCode', 'lang').toLowerCase(),
+            question_text: pick('question_text', 'questionText'),
+            question_image_url: pick('question_image_url', 'questionImageUrl'),
+            option_1_text: pick('option_1_text', 'option1Text'),
+            option_1_image_url: pick('option_1_image_url', 'option1ImageUrl'),
+            option_2_text: pick('option_2_text', 'option2Text'),
+            option_2_image_url: pick('option_2_image_url', 'option2ImageUrl'),
+            option_3_text: pick('option_3_text', 'option3Text'),
+            option_3_image_url: pick('option_3_image_url', 'option3ImageUrl'),
+            option_4_text: pick('option_4_text', 'option4Text'),
+            option_4_image_url: pick('option_4_image_url', 'option4ImageUrl'),
+            correct_option: pick('correct_option', 'correctOption'),
+            official_answer_key: pick('official_answer_key', 'officialAnswerKey'),
+            explanation: pick('explanation'),
+            chapter_id: pick('chapter_id', 'chapterId'),
+            topic_id: pick('topic_id', 'topicId'),
+            subtopic_id: pick('subtopic_id', 'subtopicId'),
+            ai_time_to_solve: pick('ai_time_to_solve'),
+            ai_difficulty_level: pick('ai_difficulty_level'),
+            ai_question_type: pick('ai_question_type'),
+            ai_chapter_name: pick('ai_chapter_name'),
+            ai_topic_name: pick('ai_topic_name'),
+            ai_subtopic_name: pick('ai_subtopic_name'),
+            ai_cognitive_skill: pick('ai_cognitive_skill'),
+            ai_is_pedagogy: pick('ai_is_pedagogy'),
+            ai_is_not: pick('ai_is_not'),
+            ai_question_tags: pick('ai_question_tags'),
+            gs_created_at: pick('gs_created_at'),
+            gs_updated_at: pick('gs_updated_at'),
           }
 
           const where = record?.question_id
@@ -80,7 +86,10 @@ const fetchQuestions: Endpoint = {
                   and: [
                     { stage_id: { equals: record.stage_id } },
                     { section_id: { equals: record.section_id } },
-                    { question_number: { equals: record.question_number } },
+                    { question_number: { equals: String(record.question_number) } },
+                    ...(record?.language_code
+                      ? [{ language_code: { equals: record.language_code } }]
+                      : []),
                   ],
                 }
               : undefined
@@ -94,11 +103,10 @@ const fetchQuestions: Endpoint = {
               collection: 'questions',
               id: found.docs[0].id,
               data: record,
-              ...(locale ? { locale } : {}),
             })
             updated++
           } else {
-            await req.payload.create({ collection: 'questions', data: record, ...(locale ? { locale } : {}) })
+            await req.payload.create({ collection: 'questions', data: record })
             inserted++
           }
         } catch (e: any) {

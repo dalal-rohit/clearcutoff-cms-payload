@@ -20,6 +20,7 @@ import { Footers } from './globals/Footers'
 import { ENavigation } from './collections/ENavigation'
 import { EStage } from './collections/EStage'
 import { ESections } from './collections/ESections'
+import { EInstance } from './collections/EInstance'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -45,7 +46,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Pages, Questions, ENavigation, EStage, ESections],
+  collections: [Users, Media, Courses, Pages, Questions, ENavigation, EStage, ESections, EInstance],
   endpoints,
   globals: [
     Footers,

@@ -1,7 +1,5 @@
 // src/collections/Pages.ts
 import { CollectionConfig } from 'payload/'
-import { heroSection } from '@/blocks/HeroSection'
-import { pricingSection } from '@/blocks/PricingSection'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -9,22 +7,17 @@ export const Pages: CollectionConfig = {
     read: () => true,
   },
   fields: [
-    { name: 'title', type: 'text', localized: true, required: true },
-    { name: 'slug', type: 'text',  unique: true },
-    {
-      name: 'sections',
-      type: 'blocks',
-      blocks: [
-        heroSection,
-        pricingSection,
-      ],
-    },
+    { name: 'title', type: 'text', required: true },
+    { name: 'slug', type: 'text', unique: true },
+    { name: 'seo_title', type: 'text' },
+    { name: 'seo_description', type: 'text' },
+
     {
       name: 'hero',
       type: 'group',
       label: 'Hero Section',
       fields: [
-        { name: 'enabled', type: 'checkbox', localized: true, defaultValue: true },
+        { name: 'enabled', type: 'checkbox', defaultValue: true },
         {
           name: 'heading',
           type: 'text',
@@ -154,12 +147,6 @@ export const Pages: CollectionConfig = {
         },
         { name: 'color', type: 'text' },
       ],
-    },
-    {
-      name: 'localSections',
-      type: 'blocks',
-      label: 'Page-Specific Sections',
-      blocks: [heroSection, pricingSection],
     },
   ],
 }

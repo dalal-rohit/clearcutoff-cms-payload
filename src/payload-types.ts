@@ -75,6 +75,7 @@ export interface Config {
     'e-navigation': ENavigation;
     'e-stage': EStage;
     'e-sections': ESection;
+    'e-instance': EInstance;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -89,6 +90,7 @@ export interface Config {
     'e-navigation': ENavigationSelect<false> | ENavigationSelect<true>;
     'e-stage': EStageSelect<false> | EStageSelect<true>;
     'e-sections': ESectionsSelect<false> | ESectionsSelect<true>;
+    'e-instance': EInstanceSelect<false> | EInstanceSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -210,42 +212,8 @@ export interface Page {
   id: number;
   title: string;
   slug?: string | null;
-  sections?:
-    | (
-        | {
-            enabled?: boolean | null;
-            heading: string;
-            subheading?: string | null;
-            ctaText?: string | null;
-            ctaLink?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'heroSection';
-          }
-        | {
-            enabled?: boolean | null;
-            title?: string | null;
-            showCoursePrice?: boolean | null;
-            cards?:
-              | {
-                  planName?: string | null;
-                  price?: number | null;
-                  features?:
-                    | {
-                        feature?: string | null;
-                        id?: string | null;
-                      }[]
-                    | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'pricingSection';
-          }
-      )[]
-    | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
   hero?: {
     enabled?: boolean | null;
     heading?: string | null;
@@ -286,42 +254,6 @@ export interface Page {
     heading?: string | null;
     color?: string | null;
   };
-  localSections?:
-    | (
-        | {
-            enabled?: boolean | null;
-            heading: string;
-            subheading?: string | null;
-            ctaText?: string | null;
-            ctaLink?: string | null;
-            backgroundImage?: (number | null) | Media;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'heroSection';
-          }
-        | {
-            enabled?: boolean | null;
-            title?: string | null;
-            showCoursePrice?: boolean | null;
-            cards?:
-              | {
-                  planName?: string | null;
-                  price?: number | null;
-                  features?:
-                    | {
-                        feature?: string | null;
-                        id?: string | null;
-                      }[]
-                    | null;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'pricingSection';
-          }
-      )[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -337,6 +269,7 @@ export interface Question {
   label_id?: string | null;
   section_id?: string | null;
   question_number?: string | null;
+  language_code?: string | null;
   question_text?: string | null;
   question_image_url?: string | null;
   option_1_text?: string | null;
@@ -347,8 +280,24 @@ export interface Question {
   option_3_image_url?: string | null;
   option_4_text?: string | null;
   option_4_image_url?: string | null;
-  correct_option?: number | null;
+  correct_option?: string | null;
+  official_answer_key?: string | null;
   explanation?: string | null;
+  chapter_id?: string | null;
+  topic_id?: string | null;
+  subtopic_id?: string | null;
+  ai_time_to_solve?: string | null;
+  ai_difficulty_level?: string | null;
+  ai_question_type?: string | null;
+  ai_chapter_name?: string | null;
+  ai_topic_name?: string | null;
+  ai_subtopic_name?: string | null;
+  ai_cognitive_skill?: string | null;
+  ai_is_pedagogy?: string | null;
+  ai_is_not?: string | null;
+  ai_question_tags?: string | null;
+  gs_created_at?: string | null;
+  gs_updated_at?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -410,6 +359,28 @@ export interface ESection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-instance".
+ */
+export interface EInstance {
+  id: number;
+  exam_instance_id?: string | null;
+  exam_id?: string | null;
+  exam_year?: string | null;
+  exam_cycle?: string | null;
+  mode?: string | null;
+  exam_pattern?: string | null;
+  duration_minutes?: string | null;
+  total_marks?: string | null;
+  total_questions?: string | null;
+  pass_criteria?: string | null;
+  pass_marks?: string | null;
+  negative_marking?: string | null;
+  marking_scheme?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -446,6 +417,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'e-sections';
         value: number | ESection;
+      } | null)
+    | ({
+        relationTo: 'e-instance';
+        value: number | EInstance;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -559,44 +534,8 @@ export interface CoursesSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  sections?:
-    | T
-    | {
-        heroSection?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              subheading?: T;
-              ctaText?: T;
-              ctaLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        pricingSection?:
-          | T
-          | {
-              enabled?: T;
-              title?: T;
-              showCoursePrice?: T;
-              cards?:
-                | T
-                | {
-                    planName?: T;
-                    price?: T;
-                    features?:
-                      | T
-                      | {
-                          feature?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-      };
+  seo_title?: T;
+  seo_description?: T;
   hero?:
     | T
     | {
@@ -653,44 +592,6 @@ export interface PagesSelect<T extends boolean = true> {
         heading?: T;
         color?: T;
       };
-  localSections?:
-    | T
-    | {
-        heroSection?:
-          | T
-          | {
-              enabled?: T;
-              heading?: T;
-              subheading?: T;
-              ctaText?: T;
-              ctaLink?: T;
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        pricingSection?:
-          | T
-          | {
-              enabled?: T;
-              title?: T;
-              showCoursePrice?: T;
-              cards?:
-                | T
-                | {
-                    planName?: T;
-                    price?: T;
-                    features?:
-                      | T
-                      | {
-                          feature?: T;
-                          id?: T;
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -705,6 +606,7 @@ export interface QuestionsSelect<T extends boolean = true> {
   label_id?: T;
   section_id?: T;
   question_number?: T;
+  language_code?: T;
   question_text?: T;
   question_image_url?: T;
   option_1_text?: T;
@@ -716,7 +618,23 @@ export interface QuestionsSelect<T extends boolean = true> {
   option_4_text?: T;
   option_4_image_url?: T;
   correct_option?: T;
+  official_answer_key?: T;
   explanation?: T;
+  chapter_id?: T;
+  topic_id?: T;
+  subtopic_id?: T;
+  ai_time_to_solve?: T;
+  ai_difficulty_level?: T;
+  ai_question_type?: T;
+  ai_chapter_name?: T;
+  ai_topic_name?: T;
+  ai_subtopic_name?: T;
+  ai_cognitive_skill?: T;
+  ai_is_pedagogy?: T;
+  ai_is_not?: T;
+  ai_question_tags?: T;
+  gs_created_at?: T;
+  gs_updated_at?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -770,6 +688,27 @@ export interface ESectionsSelect<T extends boolean = true> {
   question_weightage?: T;
   evaluation_type?: T;
   ai_evaluation_supported?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-instance_select".
+ */
+export interface EInstanceSelect<T extends boolean = true> {
+  exam_instance_id?: T;
+  exam_id?: T;
+  exam_year?: T;
+  exam_cycle?: T;
+  mode?: T;
+  exam_pattern?: T;
+  duration_minutes?: T;
+  total_marks?: T;
+  total_questions?: T;
+  pass_criteria?: T;
+  pass_marks?: T;
+  negative_marking?: T;
+  marking_scheme?: T;
   updatedAt?: T;
   createdAt?: T;
 }
