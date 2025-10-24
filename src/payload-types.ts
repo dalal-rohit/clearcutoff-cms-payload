@@ -194,10 +194,10 @@ export interface Course {
   exam_frequency?: string | null;
   evaluation_type?: string | null;
   upcoming_exam?: string | null;
-  status: 'active' | 'inactive' | 'archived';
+  status: string;
   rating?: string | null;
-  price?: number | null;
-  combo_price?: number | null;
+  price?: string | null;
+  combo_price?: string | null;
   marking_schema?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -358,6 +358,7 @@ export interface Question {
  */
 export interface ENavigation {
   id: number;
+  ent_id?: string | null;
   exam_id?: string | null;
   parent_id?: string | null;
   name?: string | null;
@@ -724,6 +725,7 @@ export interface QuestionsSelect<T extends boolean = true> {
  * via the `definition` "e-navigation_select".
  */
 export interface ENavigationSelect<T extends boolean = true> {
+  ent_id?: T;
   exam_id?: T;
   parent_id?: T;
   name?: T;

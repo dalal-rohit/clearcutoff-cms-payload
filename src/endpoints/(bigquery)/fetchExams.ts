@@ -10,7 +10,7 @@ const fetchExams: Endpoint = {
         typeof (req.query as any)?.limit === 'string' ? (req.query as any).limit : undefined
       const limit = Number.isFinite(Number(limitParam)) ? Number(limitParam) : 100
 
-      const url = `http://clearcutoff-main-backend.test/api/v1/payload/fetch?table=exam&limit=${limit}`
+      const url = `${process.env.LARAVEL_API_URL}/api/v1/payload/fetch?table=exam&limit=${limit}`
       const response = await fetch(url)
 
       if (!response.ok) {
@@ -47,12 +47,10 @@ const fetchExams: Endpoint = {
             exam_frequency: item?.exam_frequency ?? '',
             evaluation_type: item?.evaluation_type ?? '',
             upcoming_exam: item?.upcoming_exam ?? '',
-            status: ['active', 'inactive', 'archived'].includes(item?.status)
-              ? item.status
-              : 'active',
+            status: item?.status || 'active',
             rating: String(item?.rating ?? ''), // ✅ text field
-            price: Number(item?.price) || 0, // ✅ number
-            combo_price: item?.combo_price == null ? undefined : Number(item.combo_price) || 0,
+            price: String(item?.price) || 0, // ✅ number
+            combo_price: item?.combo_price == null ? undefined : String(item.combo_price) || 0,
             marking_schema: item?.marking_schema ?? '',
           }
 

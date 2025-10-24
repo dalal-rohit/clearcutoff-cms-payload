@@ -1,7 +1,7 @@
 import type { Endpoint, PayloadHandler } from 'payload'
 
-const fetchStage: Endpoint = {
-  path: '/fetch/stages',
+const fetchNavigation: Endpoint = {
+  path: '/fetch/navigation',
   method: 'get',
   handler: (async (req: any, res: any, next: any, context: { payload: any }) => {
     try {
@@ -9,7 +9,7 @@ const fetchStage: Endpoint = {
         typeof (req.query as any)?.limit === 'string' ? (req.query as any).limit : undefined
       const limit = Number.isFinite(Number(limitParam)) ? Number(limitParam) : 100
 
-      const url = `${process.env.LARAVEL_API_URL}/api/v1/payload/fetch?table=e_stage&limit=${limit}`
+      const url = `${process.env.LARAVEL_API_URL}/api/v1/payload/fetch?table=e_navigation&limit=${limit}`
       const response = await fetch(url)
 
       if (!response.ok) {
@@ -31,31 +31,33 @@ const fetchStage: Endpoint = {
         let record: any
         try {
           record = {
-            stage_id: item?.stage_id ?? item?.stageId ?? item?.id ?? '',
+            ent_id: item?.id ?? item?.id ?? '',
             exam_id: item?.exam_id ?? item?.examId ?? '',
+            parent_id: item?.parent_id ?? item?.parentId ?? '',
             name: item?.name ?? item?.title ?? '',
-            stage_type: item?.stage_type ?? item?.stageType ?? '',
-            stage_order: item?.stage_order ?? item?.stageOrder ?? '',
-            description: item?.description ?? '',
-            duration_mins: item?.duration_mins ?? item?.durationMins ?? '',
-            total_marks: item?.total_marks ?? item?.totalMarks ?? '',
-            total_questions: item?.total_questions ?? item?.totalQuestions ?? '',
-            ai_evaluation_supported:
-              item?.ai_evaluation_supported ?? item?.aiEvaluationSupported ?? '',
+            group: item?.group ?? item?.nav_group ?? '',
             status: item?.status ?? '',
+            flag_course: item?.flag_course ?? item?.flagCourse ?? '',
+            flag_tests: item?.flag_tests ?? item?.flagTests ?? '',
           }
 
           const found = await req.payload.find({
-            collection: 'e-stage',
-            where: { stage_id: { equals: record?.stage_id } },
+            collection: 'e-navigation',
+            where: {
+              and: [
+                { ent_id: { equals: record.ent_id } },
+                { exam_id: { equals: record.exam_id } },
+               
+              ],
+            },
             limit: 1,
           })
 
           if (found?.docs?.[0]?.id) {
-            await req.payload.update({ collection: 'e-stage', id: found.docs[0].id, data: record })
+            await req.payload.update({ collection: 'e-navigation', id: found.docs[0].id, data: record })
             updated++
           } else {
-            await req.payload.create({ collection: 'e-stage', data: record })
+            await req.payload.create({ collection: 'e-navigation', data: record })
             inserted++
           }
         } catch (e: any) {
@@ -70,4 +72,4 @@ const fetchStage: Endpoint = {
   }) as PayloadHandler,
 }
 
-export default fetchStage
+export default fetchNavigation

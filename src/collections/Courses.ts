@@ -1,9 +1,10 @@
-import { heroSection } from '@/blocks/HeroSection'
-import { pricingSection } from '@/blocks/PricingSection'
 import { CollectionConfig } from 'payload'
 
 const Courses: CollectionConfig = {
   slug: 'courses',
+  access: {
+    read: () => true,
+  },
   fields: [
     { name: 'exam_id', type: 'text' },
     { name: 'name', type: 'text', maxLength: 355, unique: true },
@@ -36,19 +37,17 @@ const Courses: CollectionConfig = {
     { name: 'upcoming_exam', type: 'text' },
     {
       name: 'status',
-      type: 'select',
-      options: ['active', 'inactive', 'archived'],
-      defaultValue: 'active',
+      type: 'text',
       required: true,
     },
     { name: 'rating', type: 'text' },
     {
       name: 'price',
-      type: 'number',
+      type: 'text',
     },
     {
       name: 'combo_price',
-      type: 'number',
+      type: 'text',
     },
     {
       name: 'marking_schema',
