@@ -68,6 +68,7 @@ export default buildConfig({
     push: true,
     migrationDir: path.resolve(dirname, 'payload-migrations'),
     blocksAsJSON: true,
+    
   }),
   sharp,
   plugins: [
