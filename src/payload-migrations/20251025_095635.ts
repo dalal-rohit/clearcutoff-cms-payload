@@ -66,8 +66,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"title" varchar NOT NULL,
   	"slug" varchar,
-  	"seo_title" varchar,
-  	"seo_description" varchar,
   	"hero_enabled" boolean DEFAULT true,
   	"hero_heading" varchar DEFAULT 'hero',
   	"hero_color" varchar,
@@ -184,6 +182,25 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
+  CREATE TABLE "e_instance" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"exam_instance_id" varchar NOT NULL,
+  	"exam_id" varchar NOT NULL,
+  	"exam_year" varchar,
+  	"exam_cycle" varchar,
+  	"mode" varchar,
+  	"exam_pattern" varchar,
+  	"duration_minutes" varchar,
+  	"total_marks" varchar,
+  	"total_questions" varchar,
+  	"pass_criteria" varchar,
+  	"pass_marks" varchar,
+  	"negative_marking" varchar,
+  	"marking_scheme" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
   CREATE TABLE "payload_locked_documents" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"global_slug" varchar,
@@ -203,7 +220,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"questions_id" integer,
   	"e_navigation_id" integer,
   	"e_stage_id" integer,
-  	"e_sections_id" integer
+  	"e_sections_id" integer,
+  	"e_instance_id" integer
   );
   
   CREATE TABLE "payload_preferences" (
@@ -582,6 +600,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_e_navigation_fk" FOREIGN KEY ("e_navigation_id") REFERENCES "public"."e_navigation"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_e_stage_fk" FOREIGN KEY ("e_stage_id") REFERENCES "public"."e_stage"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_e_sections_fk" FOREIGN KEY ("e_sections_id") REFERENCES "public"."e_sections"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_e_instance_fk" FOREIGN KEY ("e_instance_id") REFERENCES "public"."e_instance"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "footers_pages" ADD CONSTRAINT "footers_pages_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."footers"("id") ON DELETE cascade ON UPDATE no action;
@@ -654,6 +673,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "e_stage_created_at_idx" ON "e_stage" USING btree ("created_at");
   CREATE INDEX "e_sections_updated_at_idx" ON "e_sections" USING btree ("updated_at");
   CREATE INDEX "e_sections_created_at_idx" ON "e_sections" USING btree ("created_at");
+  CREATE INDEX "e_instance_updated_at_idx" ON "e_instance" USING btree ("updated_at");
+  CREATE INDEX "e_instance_created_at_idx" ON "e_instance" USING btree ("created_at");
   CREATE INDEX "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
   CREATE INDEX "payload_locked_documents_updated_at_idx" ON "payload_locked_documents" USING btree ("updated_at");
   CREATE INDEX "payload_locked_documents_created_at_idx" ON "payload_locked_documents" USING btree ("created_at");
@@ -668,6 +689,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_locked_documents_rels_e_navigation_id_idx" ON "payload_locked_documents_rels" USING btree ("e_navigation_id");
   CREATE INDEX "payload_locked_documents_rels_e_stage_id_idx" ON "payload_locked_documents_rels" USING btree ("e_stage_id");
   CREATE INDEX "payload_locked_documents_rels_e_sections_id_idx" ON "payload_locked_documents_rels" USING btree ("e_sections_id");
+  CREATE INDEX "payload_locked_documents_rels_e_instance_id_idx" ON "payload_locked_documents_rels" USING btree ("e_instance_id");
   CREATE INDEX "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
   CREATE INDEX "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
   CREATE INDEX "payload_preferences_created_at_idx" ON "payload_preferences" USING btree ("created_at");
@@ -758,6 +780,7 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "e_navigation" CASCADE;
   DROP TABLE "e_stage" CASCADE;
   DROP TABLE "e_sections" CASCADE;
+  DROP TABLE "e_instance" CASCADE;
   DROP TABLE "payload_locked_documents" CASCADE;
   DROP TABLE "payload_locked_documents_rels" CASCADE;
   DROP TABLE "payload_preferences" CASCADE;

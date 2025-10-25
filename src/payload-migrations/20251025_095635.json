@@ -1,5 +1,5 @@
 {
-  "id": "cc5e061b-5dde-45dc-8cdf-02b7b790f0f5",
+  "id": "7d05bbdb-e696-4f5c-8e45-26d66257d21e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -540,18 +540,6 @@
         },
         "slug": {
           "name": "slug",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "seo_title": {
-          "name": "seo_title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "seo_description": {
-          "name": "seo_description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -1439,13 +1427,13 @@
           "name": "exam_instance_id",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "exam_id": {
           "name": "exam_id",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "exam_year": {
           "name": "exam_year",
