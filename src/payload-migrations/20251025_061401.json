@@ -1,5 +1,5 @@
 {
-  "id": "75faf9a2-bb55-4e9b-9726-9bfb54ac9124",
+  "id": "a147828d-ec24-4f9d-8bfc-23137abb513b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -540,18 +540,6 @@
         },
         "slug": {
           "name": "slug",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "seo_title": {
-          "name": "seo_title",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "seo_description": {
-          "name": "seo_description",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
