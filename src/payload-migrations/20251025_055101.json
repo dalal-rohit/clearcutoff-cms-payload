@@ -1,5 +1,5 @@
 {
-  "id": "cc5e061b-5dde-45dc-8cdf-02b7b790f0f5",
+  "id": "75faf9a2-bb55-4e9b-9726-9bfb54ac9124",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1439,13 +1439,13 @@
           "name": "exam_instance_id",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "exam_id": {
           "name": "exam_id",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "exam_year": {
           "name": "exam_year",

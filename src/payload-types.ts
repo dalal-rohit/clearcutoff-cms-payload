@@ -363,8 +363,8 @@ export interface ESection {
  */
 export interface EInstance {
   id: number;
-  exam_instance_id?: string | null;
-  exam_id?: string | null;
+  exam_instance_id: string;
+  exam_id: string;
   exam_year?: string | null;
   exam_cycle?: string | null;
   mode?: string | null;
