@@ -131,4 +131,3 @@ const fetchQuestions: Endpoint = {
 }
 
 export default fetchQuestions
-
