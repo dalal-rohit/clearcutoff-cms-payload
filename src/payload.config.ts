@@ -21,6 +21,10 @@ import { ENavigation } from './collections/ENavigation'
 import { EStage } from './collections/EStage'
 import { ESections } from './collections/ESections'
 import { EInstance } from './collections/EInstance'
+import { s3Storage } from '@payloadcms/storage-s3'
+
+
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -68,11 +72,25 @@ export default buildConfig({
     push: true,
     migrationDir: path.resolve(dirname, 'payload-migrations'),
     blocksAsJSON: true,
-    
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    s3Storage({
+      collections: {
+        media: {
+          prefix: 'media',
+        },
+      },
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
+        },
+        region: process.env.S3_REGION!,
+        endpoint: process.env.S3_ENDPOINT!,
+        forcePathStyle: true,
+      },
+      bucket: process.env.S3_BUCKET!,
+    }),
   ],
 })

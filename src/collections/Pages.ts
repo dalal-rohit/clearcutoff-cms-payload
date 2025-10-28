@@ -9,7 +9,9 @@ export const Pages: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true },
     { name: 'slug', type: 'text', unique: true },
-
+    { name: 'seo_title', type: 'text' },
+    { name: 'seo_description', type: 'text' },
+  
     {
       name: 'hero',
       type: 'group',

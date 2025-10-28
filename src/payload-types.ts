@@ -168,6 +168,7 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -212,6 +213,8 @@ export interface Page {
   id: number;
   title: string;
   slug?: string | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
   hero?: {
     enabled?: boolean | null;
     heading?: string | null;
@@ -490,6 +493,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -532,6 +536,8 @@ export interface CoursesSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  seo_title?: T;
+  seo_description?: T;
   hero?:
     | T
     | {
