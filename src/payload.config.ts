@@ -65,7 +65,7 @@ export default buildConfig({
     },
     idType: 'serial',
     allowIDOnCreate: true,
-    push: true,
+    push: false,
     migrationDir: path.resolve(dirname, 'payload-migrations'),
     blocksAsJSON: true,
   }),
