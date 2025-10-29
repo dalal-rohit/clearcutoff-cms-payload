@@ -4,7 +4,7 @@ const fetchExams: Endpoint = {
   path: '/fetch/exams',
   method: 'get',
 
-  handler: (async (req: any, res: any, next: any, context: { payload: any }) => {
+  handler: (async (req: any) => {
     try {
       const limitParam =
         typeof (req.query as any)?.limit === 'string' ? (req.query as any).limit : undefined
@@ -28,7 +28,7 @@ const fetchExams: Endpoint = {
           : []
 
       let inserted = 0
-      let updated = 0
+      const updated = 0
       const failures: { reason: string; item?: unknown }[] = []
 
       for (const item of rows) {
