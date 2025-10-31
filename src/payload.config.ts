@@ -7,20 +7,11 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './collections/Users'
-import { Media } from './collections/Media'
-import Courses from './collections/Courses'
-import { Pages } from './collections/Pages'
-import { GlobalSections } from './globals/GlobalSections'
 import endpoints from './endpoints'
-import { FAQs } from './globals/FAQs'
-import { Reviews } from './globals/Reviews'
-import { Questions } from './collections/Questions'
-import { Footers } from './globals/Footers'
-import { ENavigation } from './collections/ENavigation'
-import { EStage } from './collections/EStage'
-import { ESections } from './collections/ESections'
-import { EInstance } from './collections/EInstance'
+
+import * as Collections from './collections'
+import * as Globals from './globals'
+import process from 'process'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -41,19 +32,14 @@ export default buildConfig({
     fallback: true,
   },
   admin: {
-    user: Users.slug,
+    user: Collections.Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Courses, Pages, Questions, ENavigation, EStage, ESections, EInstance],
+  collections: Object.values(Collections),
   endpoints,
-  globals: [
-    Footers,
-    FAQs,
-    Reviews,
-    GlobalSections, // Register the global here
-  ],
+  globals: Object.values(Globals),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -65,7 +51,7 @@ export default buildConfig({
     },
     idType: 'serial',
     allowIDOnCreate: true,
-    push: false,
+    push: process.env.PAYLOAD_PUSH === 'true',
     migrationDir: path.resolve(dirname, 'payload-migrations'),
     blocksAsJSON: true,
   }),

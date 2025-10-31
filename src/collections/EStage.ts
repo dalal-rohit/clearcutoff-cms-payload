@@ -2,6 +2,9 @@ import { CollectionConfig } from 'payload'
 
 export const EStage: CollectionConfig = {
   slug: 'e-stage',
+  access: {
+    read: () => true,
+  },  
   fields: [
     { name: 'stage_id', type: 'text' },
     { name: 'exam_id', type: 'text' },

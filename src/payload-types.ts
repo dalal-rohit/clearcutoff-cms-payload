@@ -67,30 +67,36 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    'e-instance': EInstance;
+    'e-label': ELabel;
+    'e-navigation': ENavigation;
+    'e-sections': ESection;
+    'e-stage': EStage;
+    exams: Exam;
+    'mapping-instance-and-stage': MappingInstanceAndStage;
+    'mapping-navigation-section': MappingNavigationSection;
     media: Media;
-    courses: Course;
     pages: Page;
     questions: Question;
-    'e-navigation': ENavigation;
-    'e-stage': EStage;
-    'e-sections': ESection;
-    'e-instance': EInstance;
+    users: User;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    'e-instance': EInstanceSelect<false> | EInstanceSelect<true>;
+    'e-label': ELabelSelect<false> | ELabelSelect<true>;
+    'e-navigation': ENavigationSelect<false> | ENavigationSelect<true>;
+    'e-sections': ESectionsSelect<false> | ESectionsSelect<true>;
+    'e-stage': EStageSelect<false> | EStageSelect<true>;
+    exams: ExamsSelect<false> | ExamsSelect<true>;
+    'mapping-instance-and-stage': MappingInstanceAndStageSelect<false> | MappingInstanceAndStageSelect<true>;
+    'mapping-navigation-section': MappingNavigationSectionSelect<false> | MappingNavigationSectionSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    courses: CoursesSelect<false> | CoursesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     questions: QuestionsSelect<false> | QuestionsSelect<true>;
-    'e-navigation': ENavigationSelect<false> | ENavigationSelect<true>;
-    'e-stage': EStageSelect<false> | EStageSelect<true>;
-    'e-sections': ESectionsSelect<false> | ESectionsSelect<true>;
-    'e-instance': EInstanceSelect<false> | EInstanceSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -99,16 +105,16 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
-    footers: Footer;
     faqs: Faq;
-    reviews: Review;
+    footers: Footer;
     'global-sections': GlobalSection;
+    reviews: Review;
   };
   globalsSelect: {
-    footers: FootersSelect<false> | FootersSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
-    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    footers: FootersSelect<false> | FootersSelect<true>;
     'global-sections': GlobalSectionsSelect<false> | GlobalSectionsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
   };
   locale: 'en' | 'hi';
   user: User & {
@@ -139,27 +145,149 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "e-instance".
  */
-export interface User {
+export interface EInstance {
   id: number;
+  exam_instance_id?: string | null;
+  exam_id?: string | null;
+  exam_year?: string | null;
+  exam_cycle?: string | null;
+  mode?: string | null;
+  exam_pattern?: string | null;
+  duration_minutes?: string | null;
+  total_marks?: string | null;
+  total_questions?: string | null;
+  pass_criteria?: string | null;
+  pass_marks?: string | null;
+  negative_marking?: string | null;
+  marking_scheme?: string | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-label".
+ */
+export interface ELabel {
+  id: number;
+  label_id?: string | null;
+  exam_instance_id?: string | null;
+  set_label?: string | null;
+  shift_label?: string | null;
+  date_label?: string | null;
+  exam_date?: string | null;
+  description?: string | null;
+  gs_created_at?: string | null;
+  gs_updated_at?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-navigation".
+ */
+export interface ENavigation {
+  id: number;
+  ent_id?: string | null;
+  exam_id?: string | null;
+  parent_id?: string | null;
+  name?: string | null;
+  group?: string | null;
+  status?: string | null;
+  flag_course?: string | null;
+  flag_tests?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-sections".
+ */
+export interface ESection {
+  id: number;
+  section_id?: string | null;
+  name?: string | null;
+  type?: string | null;
+  area?: string | null;
+  description?: string | null;
+  total_questions?: string | null;
+  total_marks?: string | null;
+  question_weightage?: string | null;
+  evaluation_type?: string | null;
+  ai_evaluation_supported?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-stage".
+ */
+export interface EStage {
+  id: number;
+  stage_id?: string | null;
+  exam_id?: string | null;
+  name?: string | null;
+  stage_type?: string | null;
+  stage_order?: string | null;
+  description?: string | null;
+  duration_mins?: string | null;
+  total_marks?: string | null;
+  total_questions?: string | null;
+  ai_evaluation_supported?: string | null;
+  status?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exams".
+ */
+export interface Exam {
+  id: number;
+  exam_id?: string | null;
+  name?: string | null;
+  short_name?: string | null;
+  state?: string | null;
+  conducting_body?: string | null;
+  logo_url?: string | null;
+  exam_type?: string | null;
+  exam_frequency?: string | null;
+  evaluation_type?: string | null;
+  upcoming_exam?: string | null;
+  status: string;
+  rating?: string | null;
+  price?: string | null;
+  combo_price?: string | null;
+  marking_schema?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mapping-instance-and-stage".
+ */
+export interface MappingInstanceAndStage {
+  id: number;
+  stage_id?: string | null;
+  instance_id?: string | null;
+  gs_created_at?: string | null;
+  gs_updated_at?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mapping-navigation-section".
+ */
+export interface MappingNavigationSection {
+  id: number;
+  entity_id?: string | null;
+  section_id?: string | null;
+  gs_created_at?: string | null;
+  gs_updated_at?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -179,30 +307,6 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "courses".
- */
-export interface Course {
-  id: number;
-  exam_id?: string | null;
-  name?: string | null;
-  short_name?: string | null;
-  state?: string | null;
-  conducting_body?: string | null;
-  logo_url?: string | null;
-  exam_type?: string | null;
-  exam_frequency?: string | null;
-  evaluation_type?: string | null;
-  upcoming_exam?: string | null;
-  status: string;
-  rating?: string | null;
-  price?: string | null;
-  combo_price?: string | null;
-  marking_schema?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -303,81 +407,27 @@ export interface Question {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-navigation".
+ * via the `definition` "users".
  */
-export interface ENavigation {
+export interface User {
   id: number;
-  ent_id?: string | null;
-  exam_id?: string | null;
-  parent_id?: string | null;
-  name?: string | null;
-  group?: string | null;
-  status?: string | null;
-  flag_course?: string | null;
-  flag_tests?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-stage".
- */
-export interface EStage {
-  id: number;
-  stage_id?: string | null;
-  exam_id?: string | null;
-  name?: string | null;
-  stage_type?: string | null;
-  stage_order?: string | null;
-  description?: string | null;
-  duration_mins?: string | null;
-  total_marks?: string | null;
-  total_questions?: string | null;
-  ai_evaluation_supported?: string | null;
-  status?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-sections".
- */
-export interface ESection {
-  id: number;
-  section_id?: string | null;
-  name?: string | null;
-  type?: string | null;
-  area?: string | null;
-  description?: string | null;
-  total_questions?: string | null;
-  total_marks?: string | null;
-  question_weightage?: string | null;
-  evaluation_type?: string | null;
-  ai_evaluation_supported?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-instance".
- */
-export interface EInstance {
-  id: number;
-  exam_instance_id?: string | null;
-  exam_id?: string | null;
-  exam_year?: string | null;
-  exam_cycle?: string | null;
-  mode?: string | null;
-  exam_pattern?: string | null;
-  duration_minutes?: string | null;
-  total_marks?: string | null;
-  total_questions?: string | null;
-  pass_criteria?: string | null;
-  pass_marks?: string | null;
-  negative_marking?: string | null;
-  marking_scheme?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -387,16 +437,40 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'e-instance';
+        value: number | EInstance;
+      } | null)
+    | ({
+        relationTo: 'e-label';
+        value: number | ELabel;
+      } | null)
+    | ({
+        relationTo: 'e-navigation';
+        value: number | ENavigation;
+      } | null)
+    | ({
+        relationTo: 'e-sections';
+        value: number | ESection;
+      } | null)
+    | ({
+        relationTo: 'e-stage';
+        value: number | EStage;
+      } | null)
+    | ({
+        relationTo: 'exams';
+        value: number | Exam;
+      } | null)
+    | ({
+        relationTo: 'mapping-instance-and-stage';
+        value: number | MappingInstanceAndStage;
+      } | null)
+    | ({
+        relationTo: 'mapping-navigation-section';
+        value: number | MappingNavigationSection;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'courses';
-        value: number | Course;
       } | null)
     | ({
         relationTo: 'pages';
@@ -407,20 +481,8 @@ export interface PayloadLockedDocument {
         value: number | Question;
       } | null)
     | ({
-        relationTo: 'e-navigation';
-        value: number | ENavigation;
-      } | null)
-    | ({
-        relationTo: 'e-stage';
-        value: number | EStage;
-      } | null)
-    | ({
-        relationTo: 'e-sections';
-        value: number | ESection;
-      } | null)
-    | ({
-        relationTo: 'e-instance';
-        value: number | EInstance;
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -466,25 +528,141 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "e-instance_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface EInstanceSelect<T extends boolean = true> {
+  exam_instance_id?: T;
+  exam_id?: T;
+  exam_year?: T;
+  exam_cycle?: T;
+  mode?: T;
+  exam_pattern?: T;
+  duration_minutes?: T;
+  total_marks?: T;
+  total_questions?: T;
+  pass_criteria?: T;
+  pass_marks?: T;
+  negative_marking?: T;
+  marking_scheme?: T;
   updatedAt?: T;
   createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-label_select".
+ */
+export interface ELabelSelect<T extends boolean = true> {
+  label_id?: T;
+  exam_instance_id?: T;
+  set_label?: T;
+  shift_label?: T;
+  date_label?: T;
+  exam_date?: T;
+  description?: T;
+  gs_created_at?: T;
+  gs_updated_at?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-navigation_select".
+ */
+export interface ENavigationSelect<T extends boolean = true> {
+  ent_id?: T;
+  exam_id?: T;
+  parent_id?: T;
+  name?: T;
+  group?: T;
+  status?: T;
+  flag_course?: T;
+  flag_tests?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-sections_select".
+ */
+export interface ESectionsSelect<T extends boolean = true> {
+  section_id?: T;
+  name?: T;
+  type?: T;
+  area?: T;
+  description?: T;
+  total_questions?: T;
+  total_marks?: T;
+  question_weightage?: T;
+  evaluation_type?: T;
+  ai_evaluation_supported?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "e-stage_select".
+ */
+export interface EStageSelect<T extends boolean = true> {
+  stage_id?: T;
+  exam_id?: T;
+  name?: T;
+  stage_type?: T;
+  stage_order?: T;
+  description?: T;
+  duration_mins?: T;
+  total_marks?: T;
+  total_questions?: T;
+  ai_evaluation_supported?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exams_select".
+ */
+export interface ExamsSelect<T extends boolean = true> {
+  exam_id?: T;
+  name?: T;
+  short_name?: T;
+  state?: T;
+  conducting_body?: T;
+  logo_url?: T;
+  exam_type?: T;
+  exam_frequency?: T;
+  evaluation_type?: T;
+  upcoming_exam?: T;
+  status?: T;
+  rating?: T;
+  price?: T;
+  combo_price?: T;
+  marking_schema?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mapping-instance-and-stage_select".
+ */
+export interface MappingInstanceAndStageSelect<T extends boolean = true> {
+  stage_id?: T;
+  instance_id?: T;
+  gs_created_at?: T;
+  gs_updated_at?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mapping-navigation-section_select".
+ */
+export interface MappingNavigationSectionSelect<T extends boolean = true> {
+  entity_id?: T;
+  section_id?: T;
+  gs_created_at?: T;
+  gs_updated_at?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -503,29 +681,6 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "courses_select".
- */
-export interface CoursesSelect<T extends boolean = true> {
-  exam_id?: T;
-  name?: T;
-  short_name?: T;
-  state?: T;
-  conducting_body?: T;
-  logo_url?: T;
-  exam_type?: T;
-  exam_frequency?: T;
-  evaluation_type?: T;
-  upcoming_exam?: T;
-  status?: T;
-  rating?: T;
-  price?: T;
-  combo_price?: T;
-  marking_schema?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -640,77 +795,25 @@ export interface QuestionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-navigation_select".
+ * via the `definition` "users_select".
  */
-export interface ENavigationSelect<T extends boolean = true> {
-  ent_id?: T;
-  exam_id?: T;
-  parent_id?: T;
-  name?: T;
-  group?: T;
-  status?: T;
-  flag_course?: T;
-  flag_tests?: T;
+export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-stage_select".
- */
-export interface EStageSelect<T extends boolean = true> {
-  stage_id?: T;
-  exam_id?: T;
-  name?: T;
-  stage_type?: T;
-  stage_order?: T;
-  description?: T;
-  duration_mins?: T;
-  total_marks?: T;
-  total_questions?: T;
-  ai_evaluation_supported?: T;
-  status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-sections_select".
- */
-export interface ESectionsSelect<T extends boolean = true> {
-  section_id?: T;
-  name?: T;
-  type?: T;
-  area?: T;
-  description?: T;
-  total_questions?: T;
-  total_marks?: T;
-  question_weightage?: T;
-  evaluation_type?: T;
-  ai_evaluation_supported?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "e-instance_select".
- */
-export interface EInstanceSelect<T extends boolean = true> {
-  exam_instance_id?: T;
-  exam_id?: T;
-  exam_year?: T;
-  exam_cycle?: T;
-  mode?: T;
-  exam_pattern?: T;
-  duration_minutes?: T;
-  total_marks?: T;
-  total_questions?: T;
-  pass_criteria?: T;
-  pass_marks?: T;
-  negative_marking?: T;
-  marking_scheme?: T;
-  updatedAt?: T;
-  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -743,37 +846,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footers".
- */
-export interface Footer {
-  id: number;
-  copyright: string;
-  pages?:
-    | {
-        name: string;
-        link: string;
-        id?: string | null;
-      }[]
-    | null;
-  socials?:
-    | {
-        link: string;
-        icon?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  contacts?:
-    | {
-        contact: string;
-        icon?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -810,34 +882,29 @@ export interface Faq {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reviews".
+ * via the `definition` "footers".
  */
-export interface Review {
+export interface Footer {
   id: number;
-  enabled?: boolean | null;
-  eyebrow?: string | null;
-  heading?: string | null;
-  highlight?:
+  copyright: string;
+  pages?:
     | {
-        text?: string | null;
+        name: string;
+        link: string;
         id?: string | null;
       }[]
     | null;
-  subheading?: string | null;
-  reviews?:
+  socials?:
     | {
-        name?: string | null;
-        profile?: (number | null) | Media;
-        gender?: ('male' | 'female') | null;
-        profession?: string | null;
-        review?: string | null;
-        reviewHighlight?:
-          | {
-              text?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        rating?: number | null;
+        link: string;
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  contacts?:
+    | {
+        contact: string;
+        icon?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -966,34 +1033,39 @@ export interface GlobalSection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footers_select".
+ * via the `definition` "reviews".
  */
-export interface FootersSelect<T extends boolean = true> {
-  copyright?: T;
-  pages?:
-    | T
+export interface Review {
+  id: number;
+  enabled?: boolean | null;
+  eyebrow?: string | null;
+  heading?: string | null;
+  highlight?:
     | {
-        name?: T;
-        link?: T;
-        id?: T;
-      };
-  socials?:
-    | T
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  subheading?: string | null;
+  reviews?:
     | {
-        link?: T;
-        icon?: T;
-        id?: T;
-      };
-  contacts?:
-    | T
-    | {
-        contact?: T;
-        icon?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
+        name?: string | null;
+        profile?: (number | null) | Media;
+        gender?: ('male' | 'female') | null;
+        profession?: string | null;
+        review?: string | null;
+        reviewHighlight?:
+          | {
+              text?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        rating?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1030,34 +1102,29 @@ export interface FaqsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reviews_select".
+ * via the `definition` "footers_select".
  */
-export interface ReviewsSelect<T extends boolean = true> {
-  enabled?: T;
-  eyebrow?: T;
-  heading?: T;
-  highlight?:
-    | T
-    | {
-        text?: T;
-        id?: T;
-      };
-  subheading?: T;
-  reviews?:
+export interface FootersSelect<T extends boolean = true> {
+  copyright?: T;
+  pages?:
     | T
     | {
         name?: T;
-        profile?: T;
-        gender?: T;
-        profession?: T;
-        review?: T;
-        reviewHighlight?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
-        rating?: T;
+        link?: T;
+        id?: T;
+      };
+  socials?:
+    | T
+    | {
+        link?: T;
+        icon?: T;
+        id?: T;
+      };
+  contacts?:
+    | T
+    | {
+        contact?: T;
+        icon?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -1191,6 +1258,42 @@ export interface GlobalSectionsSelect<T extends boolean = true> {
               text?: T;
               id?: T;
             };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  enabled?: T;
+  eyebrow?: T;
+  heading?: T;
+  highlight?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  subheading?: T;
+  reviews?:
+    | T
+    | {
+        name?: T;
+        profile?: T;
+        gender?: T;
+        profession?: T;
+        review?: T;
+        reviewHighlight?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        rating?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
