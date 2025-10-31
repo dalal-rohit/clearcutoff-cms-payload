@@ -3,7 +3,6 @@ import type { Endpoint, PayloadHandler } from 'payload'
 const fetchExams: Endpoint = {
   path: '/fetch/exams',
   method: 'get',
-
   handler: (async (req: any) => {
     try {
       const limitParam =
@@ -28,16 +27,13 @@ const fetchExams: Endpoint = {
           : []
 
       let inserted = 0
-      const updated = 0
+      let updated = 0
       const failures: { reason: string; item?: unknown }[] = []
 
       for (const item of rows) {
-        let record: any
-        console.log(item)
         try {
-         
-          record = {
-            exam_id: item?.exam_id ?? item?.examId ?? item?.id ?? '',
+          const record = {
+            exam_id: item?.exam_id ?? item?.examId ?? '',
             name: item?.name ?? item?.title ?? '',
             short_name: item?.short_name ?? item?.shortName ?? '',
             state: item?.state ?? '',
@@ -48,84 +44,36 @@ const fetchExams: Endpoint = {
             evaluation_type: item?.evaluation_type ?? '',
             upcoming_exam: item?.upcoming_exam ?? '',
             status: item?.status || 'active',
-            rating: String(item?.rating ?? ''), // ✅ text field
-            price: String(item?.price) || 0, // ✅ number
-            combo_price: item?.combo_price == null ? undefined : String(item.combo_price) || 0,
+            rating: String(item?.rating ?? ''),
+            price: String(item?.price ?? ''),
+            combo_price: item?.combo_price == null ? undefined : String(item?.combo_price ?? ''),
             marking_schema: item?.marking_schema ?? '',
           }
 
-           const found = await req.payload.find({
-            collection: 'courses',
-            where: { exam_id: { equals: record?.exam_id } },
+          // First try to find by stable identifier
+          const found = await req.payload.find({
+            collection: 'exams',
+            where: { exam_id: { equals: record.exam_id } },
             limit: 1,
           })
 
+         
+
           if (found?.docs?.[0]?.id) {
-            await req.payload.update({
-              collection: 'courses',
-              id: found?.docs?.[0]?.id,
-              data: {
-                exam_id: record?.exam_id  ,
-                name: record?.name,
-                short_name: record?.short_name,
-                state: record?.state,
-                conducting_body: record?.conducting_body,
-                logo_url: record?.logo_url,
-                exam_type: record?.exam_type,
-                exam_frequency: record?.exam_frequency,
-                evaluation_type: record?.evaluation_type,
-                upcoming_exam: record?.upcoming_exam,
-                status: record?.status,
-                rating: record?.rating,
-                price: record?.price,
-                combo_price: record?.combo_price,
-                marking_schema: record?.marking_schema,
-              },
-            })
+            await req.payload.update({ collection: 'exams', id: found.docs[0].id, data: record })
+            updated++
           } else {
-            await req.payload.create({
-              collection: 'courses',
-              data: {
-                exam_id:  record?.exam_id ,
-                name: record?.name,
-                short_name: record?.short_name,
-                state: record?.state,
-                conducting_body: record?.conducting_body,
-                logo_url: record?.logo_url,
-                exam_type: record?.exam_type,
-                exam_frequency: record?.exam_frequency,
-                evaluation_type: record?.evaluation_type,
-                upcoming_exam: record?.upcoming_exam,
-                status: record?.status,
-                rating: record?.rating,
-                price: record?.price,
-                combo_price: record?.combo_price,
-                marking_schema: record?.marking_schema,
-              },
-            })
+            await req.payload.create({ collection: 'exams', data: record })
+            inserted++
           }
-
-          inserted++
-          
-
-       
         } catch (e: any) {
-          failures.push({ reason: e?.message || 'Unknown error', item })
+          failures.push({ reason: e || 'Unknown error', item })
         }
       }
 
-      return Response.json({
-        status: 'success',
-        total: rows.length,
-        inserted,
-        updated,
-        failures,
-      })
+      return Response.json({ status: 'success', total: rows.length, inserted, updated, failures })
     } catch (err: any) {
-      return Response.json({
-        status: 'error',
-        message: err?.message || 'Unknown error',
-      })
+      return Response.json({ status: 'error', message: err?.message || 'Unknown error' })
     }
   }) as PayloadHandler,
 }

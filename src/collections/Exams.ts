@@ -1,13 +1,13 @@
 import { CollectionConfig } from 'payload'
 
-const Courses: CollectionConfig = {
-  slug: 'courses',
+export const Exams: CollectionConfig = {
+  slug: 'exams',
   access: {
     read: () => true,
   },
   fields: [
     { name: 'exam_id', type: 'text' },
-    { name: 'name', type: 'text', maxLength: 355, unique: true },
+    { name: 'name', type: 'text', maxLength: 355, },
     { name: 'short_name', type: 'text', maxLength: 355 },
     { name: 'state', type: 'text', maxLength: 355 },
     { name: 'conducting_body', type: 'text', maxLength: 355 },
@@ -56,4 +56,4 @@ const Courses: CollectionConfig = {
   ],
 }
 
-export default Courses
+

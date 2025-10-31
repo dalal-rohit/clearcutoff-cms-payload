@@ -1,7 +1,11 @@
-import bigqueryEndpoints from './(bigquery)';
+import bigqueryEndpoints from './(bigquery)'
+import dataFetchingEndpoints from './(dataFetching)'
 // you can import other groups here, e.g. analyticsEndpoints
 
-export default [
+const endpoints = [
   ...bigqueryEndpoints,
+  ...dataFetchingEndpoints,
   // ...analyticsEndpoints
-];
+]
+
+export default endpoints
