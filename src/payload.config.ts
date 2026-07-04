@@ -7,6 +7,13 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Categories } from './collections/Categories'
+import { Posts } from './collections/Posts'
+import { SiteSettings } from './globals/SiteSettings'
+import { Header } from './globals/Header'
+import { Footer } from './globals/Footer'
+import { SeoDefaults } from './globals/SeoDefaults'
+import { SocialLinks } from './globals/SocialLinks'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,7 +25,17 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Categories, Posts],
+  globals: [SiteSettings, Header, Footer, SeoDefaults, SocialLinks],
+  localization: {
+    locales: [
+      { code: 'en', label: 'English' },
+      { code: 'hi', label: 'Hindi' },
+    ],
+    defaultLocale: 'en',
+    // Fall back to the default locale when a field has no value in the requested locale.
+    fallback: true,
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
