@@ -22,25 +22,25 @@ const text = (value: string, format = 0) => ({
 })
 const paragraph = (value: string) => ({
   children: [text(value)],
-  direction: 'ltr',
-  format: '',
+  direction: 'ltr' as const,
+  format: '' as const,
   indent: 0,
-  type: 'paragraph',
+  type: 'paragraph' as const,
   version: 1,
   textFormat: 0,
   textStyle: '',
 })
 const heading = (tag: 'h2' | 'h3', value: string) => ({
   children: [text(value)],
-  direction: 'ltr',
-  format: '',
+  direction: 'ltr' as const,
+  format: '' as const,
   indent: 0,
   tag,
-  type: 'heading',
+  type: 'heading' as const,
   version: 1,
 })
 const root = (children: any[]) => ({
-  root: { children, direction: 'ltr', format: '', indent: 0, type: 'root', version: 1 },
+  root: { children, direction: 'ltr' as const, format: '' as const, indent: 0, type: 'root' as const, version: 1 },
 })
 
 // --- Article structure -> Lexical content ---
