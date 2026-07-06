@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     categories: Category;
     posts: Post;
+    exams: Exam;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    exams: ExamsSelect<false> | ExamsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -223,6 +225,11 @@ export interface Post {
     };
     [k: string]: unknown;
   };
+  content_html?: string | null;
+  /**
+   * The exam this blog post is about.
+   */
+  exam?: (number | null) | Exam;
   heroImage?: (number | null) | Media;
   author?: (number | null) | User;
   categories?: (number | Category)[] | null;
@@ -230,6 +237,99 @@ export interface Post {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exams".
+ */
+export interface Exam {
+  id: number;
+  /**
+   * External key from the main backend. Sync matches on this.
+   */
+  exam_id: string;
+  name?: string | null;
+  short_name?: string | null;
+  state?: string | null;
+  conducting_body?: string | null;
+  logo_url?: string | null;
+  exam_type?: string | null;
+  exam_frequency?: ('Annual' | 'Biannual' | 'One-Time' | 'Rolling') | null;
+  evaluation_type?: ('MCQ' | 'Descriptive' | 'Hybrid') | null;
+  ai_evaluation_supported?: boolean | null;
+  /**
+   * Source: upcoming_exam_date
+   */
+  upcoming_exam?: string | null;
+  status?: ('Active' | 'Coming Soon' | 'Archived') | null;
+  rating?: string | null;
+  price?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  combo_price?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  translation?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  marking_schema?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  metadata?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Not provided by the current backend export; reserved for future PYQ PDF data.
+   */
+  pyq_pdf?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Provenance from the main backend row.
+   */
+  source?: {
+    uuid?: string | null;
+    slug?: string | null;
+    synced_at?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -270,6 +370,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'exams';
+        value: number | Exam;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -374,6 +478,8 @@ export interface PostsSelect<T extends boolean = true> {
   slug?: T;
   excerpt?: T;
   content?: T;
+  content_html?: T;
+  exam?: T;
   heroImage?: T;
   author?: T;
   categories?: T;
@@ -381,6 +487,40 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exams_select".
+ */
+export interface ExamsSelect<T extends boolean = true> {
+  exam_id?: T;
+  name?: T;
+  short_name?: T;
+  state?: T;
+  conducting_body?: T;
+  logo_url?: T;
+  exam_type?: T;
+  exam_frequency?: T;
+  evaluation_type?: T;
+  ai_evaluation_supported?: T;
+  upcoming_exam?: T;
+  status?: T;
+  rating?: T;
+  price?: T;
+  combo_price?: T;
+  translation?: T;
+  marking_schema?: T;
+  metadata?: T;
+  pyq_pdf?: T;
+  source?:
+    | T
+    | {
+        uuid?: T;
+        slug?: T;
+        synced_at?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

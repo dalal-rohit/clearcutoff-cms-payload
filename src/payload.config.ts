@@ -9,6 +9,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Posts } from './collections/Posts'
+import { Exams } from './collections/Exams'
 import { SiteSettings } from './globals/SiteSettings'
 import { Header } from './globals/Header'
 import { Footer } from './globals/Footer'
@@ -25,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Posts],
+  collections: [Users, Media, Categories, Posts, Exams],
   globals: [SiteSettings, Header, Footer, SeoDefaults, SocialLinks],
   localization: {
     locales: [

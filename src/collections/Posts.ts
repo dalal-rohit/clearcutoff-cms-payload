@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
+import { lexicalHTMLField } from '@payloadcms/richtext-lexical'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -44,8 +45,28 @@ export const Posts: CollectionConfig = {
       type: 'richText',
       required: true,
       localized: true,
+      // Uses the project-default lexical editor (payload.config.ts), which
+      // includes H1–H6 heading nodes — the source of the article's TOC.
     },
+    // Server-rendered HTML of `content`, exposed to the blog frontend so it can
+    // render articles with html-react-parser (no Lexical dependency needed).
+    // Virtual (storeInDB: false) so it always reflects the latest content; the
+    // blog reads `content_html`. Localized output follows the requested locale.
+    lexicalHTMLField({
+      htmlFieldName: 'content_html',
+      lexicalFieldName: 'content',
+      storeInDB: false,
+    }),
     // Meta fields in the sidebar to keep the main edit view focused on content.
+    {
+      name: 'exam',
+      type: 'relationship',
+      relationTo: 'exams',
+      admin: {
+        position: 'sidebar',
+        description: 'The exam this blog post is about.',
+      },
+    },
     {
       name: 'heroImage',
       type: 'upload',
