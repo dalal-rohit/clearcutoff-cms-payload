@@ -94,5 +94,31 @@ export const Posts: CollectionConfig = {
         date: { pickerAppearance: 'dayAndTime' },
       },
     },
+    // Downloadable resources shown in a "Resources" section on the blog
+    // article (PDFs, Excel/CSV sheets, etc). The `media` collection accepts
+    // any file type (no mimeTypes restriction), so no CMS-side upload change
+    // was needed beyond this field.
+    {
+      name: 'attachments',
+      type: 'array',
+      admin: {
+        description: 'Downloadable resources (PDF, Excel, CSV, etc.) shown on the article.',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          admin: {
+            description: 'Display name, e.g. "CTET Previous Year Papers (PDF)". Defaults to the filename if left blank.',
+          },
+        },
+        {
+          name: 'file',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+      ],
+    },
   ],
 }
