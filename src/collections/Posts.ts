@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
-import { lexicalHTMLField } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, lexicalHTMLField, BlocksFeature } from '@payloadcms/richtext-lexical'
+import { ResourceTableBlock } from '../blocks/ResourceTable'
+import { resourceTableHTMLConverter } from '../blocks/resourceTableHTMLConverter'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -45,17 +47,36 @@ export const Posts: CollectionConfig = {
       type: 'richText',
       required: true,
       localized: true,
-      // Uses the project-default lexical editor (payload.config.ts), which
-      // includes H1–H6 heading nodes — the source of the article's TOC.
+      // Extends the project-default lexical feature set (H1–H6 headings —
+      // the source of the article's TOC — plus the rest of the defaults)
+      // with BlocksFeature so authors can drop a `resourceTable` block
+      // (see ../blocks/ResourceTable.ts) INLINE anywhere in the article body
+      // — e.g. a "Previous Year Papers" table between two sections — rather
+      // than only at the end of the post.
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({ blocks: [ResourceTableBlock] }),
+        ],
+      }),
     },
     // Server-rendered HTML of `content`, exposed to the blog frontend so it can
     // render articles with html-react-parser (no Lexical dependency needed).
     // Virtual (storeInDB: false) so it always reflects the latest content; the
     // blog reads `content_html`. Localized output follows the requested locale.
+    // `converters` adds the `resourceTable` block's HTML rendering so it comes
+    // out inline in content_html at the exact position the author placed it.
     lexicalHTMLField({
       htmlFieldName: 'content_html',
       lexicalFieldName: 'content',
       storeInDB: false,
+      converters: ({ defaultConverters }) => ({
+        ...defaultConverters,
+        blocks: {
+          ...(defaultConverters as { blocks?: object }).blocks,
+          resourceTable: resourceTableHTMLConverter,
+        },
+      }),
     }),
     // Meta fields in the sidebar to keep the main edit view focused on content.
     {
