@@ -234,19 +234,6 @@ export interface Post {
   author?: (number | null) | User;
   categories?: (number | Category)[] | null;
   publishedDate?: string | null;
-  /**
-   * Downloadable resources (PDF, Excel, CSV, etc.) shown on the article.
-   */
-  attachments?:
-    | {
-        /**
-         * Display name, e.g. "CTET Previous Year Papers (PDF)". Defaults to the filename if left blank.
-         */
-        label?: string | null;
-        file: number | Media;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -497,13 +484,6 @@ export interface PostsSelect<T extends boolean = true> {
   author?: T;
   categories?: T;
   publishedDate?: T;
-  attachments?:
-    | T
-    | {
-        label?: T;
-        file?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
