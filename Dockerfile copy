@@ -1,7 +1,5 @@
-# Runs Payload's DB migrations on container start (before the app begins
-# accepting traffic) via docker-entrypoint.sh, so the deployed image needs
-# the full node_modules + payload CLI + src (migrations, payload.config),
-# not just the pruned Next.js standalone output.
+# To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
+# From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
 
 FROM node:22.17.0-alpine AS base
 
@@ -39,30 +37,28 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-# Production image: full node_modules (needed for the payload CLI to run
-# migrations at startup) plus the build output, src, and config it needs.
+# Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat
-
 ENV NODE_ENV production
-ENV PAYLOAD_CONFIG_PATH src/payload.config.ts
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/src ./src
-COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=builder --chown=nextjs:nodejs /app/next.config.mjs ./next.config.mjs
-COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json
-COPY --chown=nextjs:nodejs docker-entrypoint.sh ./docker-entrypoint.sh
-RUN chmod +x ./docker-entrypoint.sh
+# Remove this line if you do not have this folder
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
@@ -70,8 +66,6 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-# Runs `payload migrate` to bring the DB schema up to date, then starts the
-# app — only if migrations succeed. If they fail, this container never
-# comes up healthy, so Coolify's zero-downtime deploy leaves the previous
-# (working) container serving traffic instead of promoting a broken one.
-ENTRYPOINT ["./docker-entrypoint.sh"]
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+CMD HOSTNAME="0.0.0.0" node server.js
