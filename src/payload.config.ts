@@ -10,11 +10,13 @@ import { Media } from './collections/Media'
 import { Categories } from './collections/Categories'
 import { Posts } from './collections/Posts'
 import { Exams } from './collections/Exams'
+import { Comparisons } from './collections/Comparisons'
 import { SiteSettings } from './globals/SiteSettings'
 import { Header } from './globals/Header'
 import { Footer } from './globals/Footer'
 import { SeoDefaults } from './globals/SeoDefaults'
 import { SocialLinks } from './globals/SocialLinks'
+import { MarketingProof } from './globals/MarketingProof'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,8 +28,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Categories, Posts, Exams],
-  globals: [SiteSettings, Header, Footer, SeoDefaults, SocialLinks],
+  collections: [Users, Media, Categories, Posts, Exams, Comparisons],
+  globals: [SiteSettings, Header, Footer, SeoDefaults, SocialLinks, MarketingProof],
   localization: {
     locales: [
       { code: 'en', label: 'English' },

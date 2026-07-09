@@ -72,6 +72,7 @@ export interface Config {
     categories: Category;
     posts: Post;
     exams: Exam;
+    comparisons: Comparison;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     exams: ExamsSelect<false> | ExamsSelect<true>;
+    comparisons: ComparisonsSelect<false> | ComparisonsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -99,6 +101,7 @@ export interface Config {
     footer: Footer;
     'seo-defaults': SeoDefault;
     'social-links': SocialLink;
+    'marketing-proof': MarketingProof;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
@@ -106,6 +109,7 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
     'seo-defaults': SeoDefaultsSelect<false> | SeoDefaultsSelect<true>;
     'social-links': SocialLinksSelect<false> | SocialLinksSelect<true>;
+    'marketing-proof': MarketingProofSelect<false> | MarketingProofSelect<true>;
   };
   locale: 'en' | 'hi';
   widgets: {
@@ -332,6 +336,90 @@ export interface Exam {
   createdAt: string;
 }
 /**
+ * Competitor comparison landing pages, e.g. /compare/interakt.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comparisons".
+ */
+export interface Comparison {
+  id: number;
+  /**
+   * e.g. "Interakt". Used to build default copy and the page title.
+   */
+  competitorName: string;
+  competitorLogo: number | Media;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  hero: {
+    eyebrow?: string | null;
+    /**
+     * e.g. "Gallabox vs Interakt – Why leading brands choose Gallabox".
+     */
+    title: string;
+    description?: string | null;
+    ctaLabel?: string | null;
+    /**
+     * Relative path (e.g. /signup) or full URL.
+     */
+    ctaUrl?: string | null;
+  };
+  /**
+   * e.g. "How Gallabox blows Interakt out of the water".
+   */
+  comparisonSectionTitle?: string | null;
+  /**
+   * The detailed "you vs them" cards, each followed by an Impact callout.
+   */
+  comparisonPoints?:
+    | {
+        title: string;
+        yourText: string;
+        theirText: string;
+        impactText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Condensed feature-by-feature comparison table. Can include more granular rows than the Comparison Points above.
+   */
+  featureTable?:
+    | {
+        feature: string;
+        yourStatus: 'yes' | 'warning' | 'no';
+        yourText?: string | null;
+        theirStatus: 'yes' | 'warning' | 'no';
+        theirText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  midCta?: {
+    title?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  promise?: {
+    title?: string | null;
+    body?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  /**
+   * Overrides SEO Defaults for this comparison page.
+   */
+  meta?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -374,6 +462,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'exams';
         value: number | Exam;
+      } | null)
+    | ({
+        relationTo: 'comparisons';
+        value: number | Comparison;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -524,6 +616,71 @@ export interface ExamsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comparisons_select".
+ */
+export interface ComparisonsSelect<T extends boolean = true> {
+  competitorName?: T;
+  competitorLogo?: T;
+  generateSlug?: T;
+  slug?: T;
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  comparisonSectionTitle?: T;
+  comparisonPoints?:
+    | T
+    | {
+        title?: T;
+        yourText?: T;
+        theirText?: T;
+        impactText?: T;
+        id?: T;
+      };
+  featureTable?:
+    | T
+    | {
+        feature?: T;
+        yourStatus?: T;
+        yourText?: T;
+        theirStatus?: T;
+        theirText?: T;
+        id?: T;
+      };
+  midCta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  promise?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  meta?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -663,6 +820,56 @@ export interface SocialLink {
   createdAt?: string | null;
 }
 /**
+ * Shared trust logos, stats, and integration content reused across comparison pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "marketing-proof".
+ */
+export interface MarketingProof {
+  id: number;
+  trustedBy?: {
+    label?: string | null;
+    logos?:
+      | {
+          name: string;
+          logo: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  integrations?: {
+    title?: string | null;
+    description?: string | null;
+    linkLabel?: string | null;
+    linkUrl?: string | null;
+    logos?:
+      | {
+          name: string;
+          logo: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * e.g. "200M+ / Conversations powered".
+   */
+  stats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  finalCta?: {
+    title?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -733,6 +940,57 @@ export interface SocialLinksSelect<T extends boolean = true> {
         platform?: T;
         url?: T;
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "marketing-proof_select".
+ */
+export interface MarketingProofSelect<T extends boolean = true> {
+  trustedBy?:
+    | T
+    | {
+        label?: T;
+        logos?:
+          | T
+          | {
+              name?: T;
+              logo?: T;
+              id?: T;
+            };
+      };
+  integrations?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        linkLabel?: T;
+        linkUrl?: T;
+        logos?:
+          | T
+          | {
+              name?: T;
+              logo?: T;
+              id?: T;
+            };
+      };
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  finalCta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
       };
   updatedAt?: T;
   createdAt?: T;
