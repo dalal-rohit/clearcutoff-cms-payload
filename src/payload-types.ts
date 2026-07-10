@@ -73,6 +73,7 @@ export interface Config {
     posts: Post;
     exams: Exam;
     comparisons: Comparison;
+    alternatives: Alternative;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +87,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     exams: ExamsSelect<false> | ExamsSelect<true>;
     comparisons: ComparisonsSelect<false> | ComparisonsSelect<true>;
+    alternatives: AlternativesSelect<false> | AlternativesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -420,6 +422,173 @@ export interface Comparison {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * "Best X Alternatives" listicle pages, e.g. /alternatives/testprep-pro.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alternatives".
+ */
+export interface Alternative {
+  id: number;
+  /**
+   * e.g. "TestPrep Pro". Used to template the SEO title and page copy.
+   */
+  competitorName: string;
+  competitorLogo?: (number | null) | Media;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  hero: {
+    eyebrow?: string | null;
+    /**
+     * e.g. "10 Best TestPrep Pro Alternatives for Teaching Exam Prep in 2026".
+     */
+    title: string;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  /**
+   * The opening narrative before the tool list (e.g. "Why look for a TestPrep Pro alternative"). Free-form rich text since this varies article to article.
+   */
+  introBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  introBody_html?: string | null;
+  /**
+   * e.g. "Best TestPrep Pro alternatives at a glance". Leave blank to hide the summary table.
+   */
+  summaryTableTitle?: string | null;
+  /**
+   * One entry per tool in the listicle, in display order (Clear Cutoff is usually #1).
+   */
+  tools?:
+    | {
+        name: string;
+        logo?: (number | null) | Media;
+        /**
+         * e.g. "End-to-end lifecycle management". Shown as a subtitle and in the summary table.
+         */
+        bestFor?: string | null;
+        /**
+         * Optional. Shown in the summary table only.
+         */
+        standoutFeature?: string | null;
+        description: string;
+        features?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional — use Pros/Cons OR Limitations, not necessarily both.
+         */
+        pros?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        cons?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional alternative to Pros/Cons — a single "limitations" list.
+         */
+        limitations?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Short one-liner, e.g. "Starts at $89/year". Shown in the summary table.
+         */
+        pricingSummary?: string | null;
+        /**
+         * Optional detailed pricing breakdown shown under the tool.
+         */
+        pricingTiers?:
+          | {
+              planName: string;
+              price: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional G2/Capterra ratings.
+         */
+        rating?: {
+          /**
+           * e.g. "4.6/5"
+           */
+          g2Score?: string | null;
+          /**
+           * e.g. "150+ reviews"
+           */
+          g2ReviewCount?: string | null;
+          capterraScore?: string | null;
+          capterraReviewCount?: string | null;
+        };
+        /**
+         * Optional customer quote shown under this tool.
+         */
+        testimonial?: {
+          quote?: string | null;
+          authorName?: string | null;
+          authorRole?: string | null;
+          authorCompany?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  midCta?: {
+    title?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  promise?: {
+    title?: string | null;
+    body?: string | null;
+    ctaLabel?: string | null;
+    ctaUrl?: string | null;
+  };
+  /**
+   * Other Alternatives pages to link at the bottom of this article.
+   */
+  relatedAlternatives?: (number | Alternative)[] | null;
+  publishedDate?: string | null;
+  /**
+   * Overrides SEO Defaults for this page.
+   */
+  meta?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -466,6 +635,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'comparisons';
         value: number | Comparison;
+      } | null)
+    | ({
+        relationTo: 'alternatives';
+        value: number | Alternative;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -668,6 +841,114 @@ export interface ComparisonsSelect<T extends boolean = true> {
         ctaLabel?: T;
         ctaUrl?: T;
       };
+  meta?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alternatives_select".
+ */
+export interface AlternativesSelect<T extends boolean = true> {
+  competitorName?: T;
+  competitorLogo?: T;
+  generateSlug?: T;
+  slug?: T;
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  introBody?: T;
+  introBody_html?: T;
+  summaryTableTitle?: T;
+  tools?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        bestFor?: T;
+        standoutFeature?: T;
+        description?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        pros?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        cons?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        limitations?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        pricingSummary?: T;
+        pricingTiers?:
+          | T
+          | {
+              planName?: T;
+              price?: T;
+              id?: T;
+            };
+        rating?:
+          | T
+          | {
+              g2Score?: T;
+              g2ReviewCount?: T;
+              capterraScore?: T;
+              capterraReviewCount?: T;
+            };
+        testimonial?:
+          | T
+          | {
+              quote?: T;
+              authorName?: T;
+              authorRole?: T;
+              authorCompany?: T;
+            };
+        id?: T;
+      };
+  midCta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  promise?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+      };
+  relatedAlternatives?: T;
+  publishedDate?: T;
   meta?:
     | T
     | {

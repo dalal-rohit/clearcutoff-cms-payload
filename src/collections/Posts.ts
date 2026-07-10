@@ -3,6 +3,8 @@ import { slugField } from 'payload'
 import { lexicalEditor, lexicalHTMLField, BlocksFeature } from '@payloadcms/richtext-lexical'
 import { ResourceTableBlock } from '../blocks/ResourceTable'
 import { resourceTableHTMLConverter } from '../blocks/resourceTableHTMLConverter'
+import { DataTableBlock } from '../blocks/DataTable'
+import { dataTableHTMLConverter } from '../blocks/dataTableHTMLConverter'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -49,14 +51,15 @@ export const Posts: CollectionConfig = {
       localized: true,
       // Extends the project-default lexical feature set (H1–H6 headings —
       // the source of the article's TOC — plus the rest of the defaults)
-      // with BlocksFeature so authors can drop a `resourceTable` block
-      // (see ../blocks/ResourceTable.ts) INLINE anywhere in the article body
-      // — e.g. a "Previous Year Papers" table between two sections — rather
-      // than only at the end of the post.
+      // with BlocksFeature so authors can drop blocks INLINE anywhere in the
+      // article body rather than only at the end: `resourceTable` (see
+      // ../blocks/ResourceTable.ts) for "Previous Year Papers"-style lists,
+      // and `dataTable` (see ../blocks/DataTable.ts) for a fully author-defined
+      // table with any number of columns/rows, e.g. a comparison table.
       editor: lexicalEditor({
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
-          BlocksFeature({ blocks: [ResourceTableBlock] }),
+          BlocksFeature({ blocks: [ResourceTableBlock, DataTableBlock] }),
         ],
       }),
     },
@@ -75,6 +78,7 @@ export const Posts: CollectionConfig = {
         blocks: {
           ...(defaultConverters as { blocks?: object }).blocks,
           resourceTable: resourceTableHTMLConverter,
+          dataTable: dataTableHTMLConverter,
         },
       }),
     }),
