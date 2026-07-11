@@ -96,6 +96,7 @@ export const Posts: CollectionConfig = {
       name: 'heroImage',
       type: 'upload',
       relationTo: 'media',
+      localized: true,
       admin: { position: 'sidebar' },
     },
     {
