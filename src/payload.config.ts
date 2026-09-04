@@ -18,6 +18,7 @@ import { Footer } from './globals/Footer'
 import { SeoDefaults } from './globals/SeoDefaults'
 import { SocialLinks } from './globals/SocialLinks'
 import { MarketingProof } from './globals/MarketingProof'
+import { Faq } from './globals/Faq'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,7 +31,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Categories, Posts, Exams, Comparisons, Alternatives],
-  globals: [SiteSettings, Header, Footer, SeoDefaults, SocialLinks, MarketingProof],
+  globals: [SiteSettings, Header, Footer, SeoDefaults, SocialLinks, MarketingProof, Faq],
   localization: {
     locales: [
       { code: 'en', label: 'English' },

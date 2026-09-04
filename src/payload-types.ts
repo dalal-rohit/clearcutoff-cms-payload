@@ -104,6 +104,7 @@ export interface Config {
     'seo-defaults': SeoDefault;
     'social-links': SocialLink;
     'marketing-proof': MarketingProof;
+    faq: Faq;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
@@ -112,6 +113,7 @@ export interface Config {
     'seo-defaults': SeoDefaultsSelect<false> | SeoDefaultsSelect<true>;
     'social-links': SocialLinksSelect<false> | SocialLinksSelect<true>;
     'marketing-proof': MarketingProofSelect<false> | MarketingProofSelect<true>;
+    faq: FaqSelect<false> | FaqSelect<true>;
   };
   locale: 'en' | 'hi';
   widgets: {
@@ -1151,6 +1153,43 @@ export interface MarketingProof {
   createdAt?: string | null;
 }
 /**
+ * Categories and questions shown on the public /faq page. Order of categories and questions here is the display order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq".
+ */
+export interface Faq {
+  id: number;
+  /**
+   * One entry per filter tab on the FAQ page.
+   */
+  categories?:
+    | {
+        /**
+         * Stable identifier for this category (e.g. "general"). Not shown to visitors — only used internally to track the active tab. Do not change once published, or bookmarked/shared tab links break.
+         */
+        key: string;
+        /**
+         * Filter tab label shown to visitors, e.g. "General".
+         */
+        label: string;
+        questions?:
+          | {
+              question: string;
+              /**
+               * Plain text. Use a blank line or line break for paragraphs — line breaks are preserved on the page.
+               */
+              answer: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -1272,6 +1311,29 @@ export interface MarketingProofSelect<T extends boolean = true> {
         description?: T;
         ctaLabel?: T;
         ctaUrl?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq_select".
+ */
+export interface FaqSelect<T extends boolean = true> {
+  categories?:
+    | T
+    | {
+        key?: T;
+        label?: T;
+        questions?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
