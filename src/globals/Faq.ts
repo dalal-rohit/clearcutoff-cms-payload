@@ -1,4 +1,6 @@
 import type { GlobalConfig } from 'payload'
+import { faqPlainTextField, faqRichFields, hasRichText } from '../fields/faqRichText'
+import { revalidateFaqPage } from '../hooks/revalidateFaqPage'
 
 export const Faq: GlobalConfig = {
   slug: 'faq',
@@ -10,6 +12,9 @@ export const Faq: GlobalConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [revalidateFaqPage],
   },
   fields: [
     {
@@ -43,21 +48,35 @@ export const Faq: GlobalConfig = {
           type: 'array',
           labels: { singular: 'Question', plural: 'Questions' },
           fields: [
+            // New content: rich text (bold / blue / link). The legacy plain fields below
+            // stay in the schema so rows saved before phase 76 keep showing; they appear
+            // in the admin only while a row still has legacy text and no rich text.
+            ...faqRichFields('question'),
             {
               name: 'question',
               type: 'text',
-              required: true,
               localized: true,
+              admin: {
+                description:
+                  'Legacy plain text. Still shown on the site until you fill the rich question above.',
+                condition: (_, siblingData) =>
+                  Boolean(siblingData?.question) && !hasRichText(siblingData?.questionRich),
+              },
             },
+            faqPlainTextField('question'),
+            ...faqRichFields('answer'),
             {
               name: 'answer',
               type: 'textarea',
-              required: true,
               localized: true,
               admin: {
-                description: 'Plain text. Use a blank line or line break for paragraphs — line breaks are preserved on the page.',
+                description:
+                  'Legacy plain text. Still shown on the site until you fill the rich answer above.',
+                condition: (_, siblingData) =>
+                  Boolean(siblingData?.answer) && !hasRichText(siblingData?.answerRich),
               },
             },
+            faqPlainTextField('answer'),
           ],
         },
       ],
