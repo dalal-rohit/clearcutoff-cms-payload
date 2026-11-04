@@ -1175,11 +1175,54 @@ export interface Faq {
         label: string;
         questions?:
           | {
-              question: string;
               /**
-               * Plain text. Use a blank line or line break for paragraphs — line breaks are preserved on the page.
+               * Use Bold, Blue or Link from the toolbar. Keep it to one line.
                */
-              answer: string;
+              questionRich?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              questionHtml?: string | null;
+              /**
+               * Legacy plain text. Still shown on the site until you fill the rich question above.
+               */
+              question?: string | null;
+              questionText?: string | null;
+              /**
+               * Use Bold, Blue, Link or a list from the toolbar. Press Enter for a new paragraph.
+               */
+              answerRich?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              answerHtml?: string | null;
+              /**
+               * Legacy plain text. Still shown on the site until you fill the rich answer above.
+               */
+              answer?: string | null;
+              answerText?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -1329,8 +1372,14 @@ export interface FaqSelect<T extends boolean = true> {
         questions?:
           | T
           | {
+              questionRich?: T;
+              questionHtml?: T;
               question?: T;
+              questionText?: T;
+              answerRich?: T;
+              answerHtml?: T;
               answer?: T;
+              answerText?: T;
               id?: T;
             };
         id?: T;
