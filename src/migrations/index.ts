@@ -10,6 +10,7 @@ import * as migration_20260719_124416 from './20260719_124416';
 import * as migration_20260720_032646_baseline from './20260720_032646_baseline';
 import * as migration_20260905_051125 from './20260905_051125';
 import * as migration_20261104_061012_faq_rich_text from './20261104_061012_faq_rich_text';
+import * as migration_20261124_055500_mr_locale from './20261124_055500_mr_locale';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261104_061012_faq_rich_text.up,
     down: migration_20261104_061012_faq_rich_text.down,
-    name: '20261104_061012_faq_rich_text'
+    name: '20261104_061012_faq_rich_text',
+  },
+  {
+    up: migration_20261124_055500_mr_locale.up,
+    down: migration_20261124_055500_mr_locale.down,
+    name: '20261124_055500_mr_locale'
   },
 ];

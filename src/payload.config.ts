@@ -36,6 +36,7 @@ export default buildConfig({
     locales: [
       { code: 'en', label: 'English' },
       { code: 'hi', label: 'Hindi' },
+      { code: 'mr', label: 'Marathi' },
     ],
     defaultLocale: 'en',
     // Fall back to the default locale when a field has no value in the requested locale.
