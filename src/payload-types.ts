@@ -96,7 +96,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'hi') | ('en' | 'hi')[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'hi' | 'mr') | ('en' | 'hi' | 'mr')[];
   globals: {
     'site-settings': SiteSetting;
     header: Header;
@@ -115,7 +115,7 @@ export interface Config {
     'marketing-proof': MarketingProofSelect<false> | MarketingProofSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
   };
-  locale: 'en' | 'hi';
+  locale: 'en' | 'hi' | 'mr';
   widgets: {
     collections: CollectionsWidget;
   };
